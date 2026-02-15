@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: int_page_flow
+    description: |
+      Tracks sequential page views and profile tab interactions during user sessions.  
+      Deduplicates repeated views, enriches events with session metadata, and supports page flow analysis.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_page_flow)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: record_id
+        description: Unique identifier for the page event (sourced from GA4 `event_id`).
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: Sanitized GA4 user ID. Set to null if the ID starts with an underscore (anonymous or invalid users).
+
+      - name: user_pseudo_id
+        description: GA4 pseudo ID representing the anonymous user device/session.
+
+      - name: session_id
+        description: Unique GA4 session identifier.
+
+      - name: session_event_rank
+        description: Order of the event within the session, based on `event_datetime_utc`.
+
+      - name: event_name
+        description: GA4 event type (`page_view` or `profile_interactions`).
+
+      - name: event_datetime_utc
+        description: "{{ doc('event_datetime_utc') }}"
+
+      - name: page_location
+        description: Full URL of the current page viewed.
+
+      - name: previous_page_view_location
+        description: URL of the previous `page_view` event within the same session; used to detect repeat views.
+
+      - name: page_path
+        description: Path portion of the `page_location`.
+
+      - name: page_title
+        description: Raw page title from the GA4 event.
+        
+      - name: grouped_page_path
+        description: "{{ doc('grouped_page_path') }}"
+        
+      - name: grouped_page_name
+        description: "{{ doc('grouped_page_name') }}"
+
+      - name: tab
+        description: Tab name when the event is a profile tab interaction (e.g. `Overview`, `Investors`, etc.).
+
+      - name: grouped_page_name_with_tab
+        description: Concatenation of `grouped_page_name` and `tab` (if present), used for higher granularity in path analysis.

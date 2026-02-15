@@ -1,0 +1,152 @@
+version: 2
+
+models:
+  - name: private_funding
+    description: Private funding rounds for Israeli tech companies.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [round_id]
+        warn_unenforced: false
+      - type: foreign_key
+        columns: [company_id]
+        to: ref('companies')
+        to_columns: [company_id]
+        warn_unenforced: false
+
+    columns:
+      - name: round_id
+        description: Unique identifier for each funding round.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: round_date
+        description: Date when the funding round occurred.
+        data_type: date
+
+      - name: round_year
+        description: Year when the funding round occurred.
+        data_type: int64
+
+      - name: disclosure_event_level
+        description: Level of disclosure for the funding event.
+        data_type: string
+
+      - name: round_type
+        description: Type of funding round (e.g., Seed, Series A).
+        data_type: string
+
+      - name: disclosure_event_type_level
+        description: Level of disclosure for the type of funding event.
+        data_type: string
+
+      - name: amount
+        description: Amount of funding raised in the round.
+        data_type: int64
+
+      - name: round_size_category
+        description: Category of the funding round size.
+        data_type: string
+
+      - name: disclosure_amount_level
+        description: Level of disclosure for the funding amount.
+        data_type: string
+
+      - name: company_id
+        description: Unique identifier for the company receiving funding.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('companies')
+              field: company_id
+              config:
+                severity: warn
+
+      - name: company_name
+        description: Name of the company receiving funding.
+        data_type: string
+
+      - name: company_primary_sector_name
+        description: Primary sector of the company receiving funding.
+        data_type: string
+
+      - name: disclosure_company_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: round_rank
+        description: Rank of the funding round.
+        data_type: int64
+
+      - name: company_finder_url
+        description: Finder URL for finding information about the company.
+        data_type: string
+
+      - name: investors_origin
+        description: Origin of the investors participating in the round.
+        data_type: string
+
+      - name: num_investors
+        description: Number of investors participating in the round.
+        data_type: int64
+
+      - name: num_angels
+        description: Number of angel investors participating in the round.
+        data_type: int64
+
+      - name: num_israeli_investors
+        description: Number of Israeli investors participating in the round.
+        data_type: int64
+
+      - name: num_global_investors
+        description: Number of global investors participating in the round.
+        data_type: int64
+
+      - name: source
+        description: Source of the funding round information.
+        data_type: string
+
+      - name: prior_round_date
+        description: Date of the funding round prior to this one.
+        data_type: date
+
+      - name: prior_round_type
+        description: Type of the funding round prior to this one.
+        data_type: string
+
+      - name: prior_round_amount
+        description: Amount raised in the funding round prior to this one.
+        data_type: int64
+
+      - name: event_created_date
+        description: Date when the funding event was created.
+        data_type: date
+
+      - name: event_creator_name
+        description: Name of the user who created the funding event.
+        data_type: string
+
+      - name: event_creator_email
+        description: Email of the user who created the funding event.
+        data_type: string
+
+      - name: event_updated_date
+        description: Date and time when the funding event was last updated.
+        data_type: datetime
+
+      - name: event_updater_name
+        description: Name of the user who last updated the funding event.
+        data_type: string
+
+      - name: event_updater_email
+        description: Email of the user who last updated the funding event.
+        data_type: string

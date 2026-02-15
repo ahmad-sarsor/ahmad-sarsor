@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: int_saved_searches 
+    description: |
+      Granularity: user_id, saved_search_id  
+
+
+      Intermediate view that standardizes and enriches saved search metadata from the MySQL source.  
+      It cleans and normalizes fields like timestamps, removes default placeholder values,  
+      and extracts date-level fields for easier aggregation.  
+      The model is used in analytics around user engagement with saved searches.
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_saved_searches)**
+
+    config:
+      tags: ["Google Analytics 4", "Search", "product_analytics"]
+    
+    columns:
+      - name: saved_search_id
+        description: Unique identifier of the saved search.
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: The ID of the user who created the saved search.
+
+      - name: saved_search_name
+        description: User-provided name for the saved search.
+
+      - name: saved_search_description
+        description: Optional user-provided description of the saved search.
+
+      - name: saved_search_url
+        description: The URL that encodes the saved search parameters.
+
+      - name: saved_search_type
+        description: Type/category of the saved search.
+
+      - name: notification_interval_days
+        description: >
+          The interval (in days) for sending notifications to the user about this saved search.
+          Used in user engagement and alerting logic.
+
+      - name: saved_search_created_date
+        description: >
+          Date extracted from the created datetime, used for daily aggregations and time-series analysis.
+
+      - name: saved_search_created_datetime
+        description: Timestamp when the saved search was originally created.
+
+      - name: saved_search_last_modified_datetime
+        description: >
+          Timestamp of the last modification to the saved search. Null if the search was never updated after creation.

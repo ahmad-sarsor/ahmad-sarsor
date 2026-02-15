@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: stg_ga4__events_unnested
+    description: |
+      ## General Information
+      * **Unique Key**: event_params_key_id  
+      * **Granularity**: user_id, session_id, event_id, event_datetime_utc, event_key, event_params_key_id  
+      * **Type**: Incremental (lookback window of 7 days)
+      * **Description**: This staging model unnests GA4 event parameters and enriches events with user dimensions, device information, traffic source data, and marketing attribution.  
+      It handles user ID resolution by backfilling missing IDs from the most recent events within the same session or user_pseudo_id.  
+      For marketing fields, it prioritizes direct event parameters over traffic source fields,  
+      cleans values by removing parentheses and '(none)' values, and extracts UTM parameters from page URLs to ensure consistent attribution tracking.  
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sGA4_Staging!3sstg_ga4__events_unnested)**
+
+      ## Logical Components
+
+      ### Data Source and Filtering
+      * **source**: Selects from GA4 events tables with a lookback window of 7 days, or up to the latest event date in the existing model, ensuring efficient incremental processing.
+
+      ### Event Data Extraction
+      * **extracted**: Restructures the raw GA4 data by unnesting event parameters and extracting session information, device metadata, and geographic data into dedicated columns for easier querying.
+
+      ### URL Parameter Parsing
+      * **marketing_parameters**: Extracts UTM tracking parameters and custom marketing identifiers from page URLs using regular expressions, enabling analysis of traffic sources and campaign effectiveness.
+
+      ### User ID Resolution
+      * **filled_user_id/filled_user_id_2**: Implements sophisticated user ID backfilling logic using window functions to propagate user IDs within sessions and user_pseudo_ids, ensuring consistent user identification across touchpoints.
+      * Creates fallback identifiers using device and geo information when standard IDs are unavailable.
+
+      ### Dimension Data Management
+      * **recent_dim**: Stores the most recent dimensional data for each user/session combination to provide consistent dimensional attributes across events.
+
+      ### ID Consolidation
+      * **events_with_ids**: Merges various ID sources and dimensional data, prioritizing actual IDs over generated ones and flagging synthetic identifiers for transparency.
+
+      ### Marketing Attribution
+      * **with_campaigns**: Implements a hierarchical logic to determine the most accurate marketing source, medium, and campaign values by evaluating multiple potential sources and cleaning the values.
+      * Joins with a campaign objectives reference table to enrich marketing data.
+
+      ### Final Event Parameter Processing
+      * **cte**: Generates consistent identifiers for events and parameters, calculates session metrics, and finalizes the event parameter values by selecting the appropriate type (string, int, double) based on the parameter key.
+    
+    columns:
+      - name: event_params_key_id
+        description: A unique identifier per record (based on event_id + event_params key)
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: event_id
+        description: |
+          A unique identifier for each event (before unnesting),  
+          based on user ids, session ids, event name and timestamp,  
+          and more unique identifiers to differentiate between different events sent with the same timestamp
+        data_tests:
+          - not_null
+
+      - name: session_id
+        description: Combination of user_pseudo_id + ga_session_id

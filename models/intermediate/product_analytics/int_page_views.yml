@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: int_page_views
+    description: |
+      Granularity: event_id  
+      
+      Intermediate model that captures individual page view events from GA4 and processes them into a structured format.  
+      Events are pivoted to include page referrer, location, and title.  
+      Additional derived fields like path and query components are extracted from URLs, and semantic grouping is applied to standardize page paths and names.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_page_views)**
+
+    config:
+      tags: ["Google Analytics 4", "product_analytics"]
+    
+    columns:
+      - name: event_id
+        description: '{{ doc("event_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_ga4__events_unnested')
+              field: event_id
+
+      - name: event_date
+        description: "{{ doc('event_date') }}"
+
+      - name: user_id
+        description: >
+          Canonical user ID associated with the event, may be null for anonymous users.
+
+      - name: user_pseudo_id
+        description: >
+          Anonymous GA4 user identifier, used to track users across sessions.
+
+      - name: session_id
+        description: >
+          Unique identifier for the session in which the page view occurred.
+
+      - name: page_referrer
+        description: >
+          Full URL of the referrer page that led to the current page view.
+
+      - name: page_location
+        description: >
+          Full URL of the page that was viewed.
+
+      - name: page_title
+        description: >
+          Title of the page that was viewed, as captured in the GA4 event.
+
+      - name: page_path
+        description: >
+          Path component of the `page_location` URL, extracted via a macro.
+
+      - name: page_query
+        description: >
+          Query string from the `page_location` URL, extracted via a macro.
+
+      - name: referrer_path
+        description: >
+          Path component of the `page_referrer` URL, extracted via a macro.
+        
+      - name: grouped_page_path
+        description: "{{ doc('grouped_page_path') }}"
+        
+      - name: grouped_page_name
+        description: "{{ doc('grouped_page_name') }}"
+        
+      - name: grouped_referrer_path
+        description: "{{ doc('grouped_referrer_path') }}"
+        
+      - name: grouped_referrer_name
+        description: "{{ doc('grouped_referrer_name') }}"

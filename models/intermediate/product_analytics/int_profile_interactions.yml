@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: int_profile_interactions
+    description: |
+      Granularity: date_day, user_id, session_id, company, page_view_rank, tab_rank  
+      
+      Each record describes an interaction with a profile (company) page.  
+        
+      Key fields include:
+      - **action**: The specific interaction that was taken
+      - **action_category**: The type of interaction that was taken
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_profile_interactions)**
+
+    config:
+      tags: ["Google Analytics 4", "product_analytics"]
+    
+    columns:
+      - name: event_id
+        description: '{{ doc("event_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+    
+    data_tests:
+      - dbt_expectations.expect_table_aggregation_to_equal_other_table:
+          name: int_profile_interactions_engagement
+          expression: sum(engagement_time_seconds)
+          group_by: ['date_trunc(date_day, day)']
+          compare_model: ref("stg_ga4__events_pivoted")
+          compare_expression: sum(engagement_time_seconds)
+          compare_group_by: ['date_trunc(event_date, day)']
+          compare_row_condition: company_url_name is not null
+          tolerance_percent: 0.1

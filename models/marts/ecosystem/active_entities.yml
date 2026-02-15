@@ -1,0 +1,117 @@
+version: 2
+
+models:
+  - name: active_entities
+    description: >
+      Yearly activity snapshot for all ecosystem entities (Companies, MNCs, Investors, Hubs).
+      Creates one record per entity per year from 2015 to current year, tracking activity status over time.
+      Enables historical analysis of ecosystem growth, entity lifecycles, and yearly active entity counts.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [activity_id]
+        warn_unenforced: false
+
+    columns:
+      - name: activity_id
+        description: Surrogate key combining entity_id and year for unique identification.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: year
+        description: The year being analyzed (2015 to current year).
+        data_type: int64
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: entity_id
+        description: Unique identifier for the entity.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: entity_name
+        description: Name of the entity.
+        data_type: string
+
+      - name: entity_type
+        description: Type of entity.
+        data_type: string
+
+      - name: entity_sub_type
+        description: Sub-type classification of the entity.
+        data_type: string
+
+      - name: primary_sector_name
+        description: Primary sector classification of the entity.
+        data_type: string
+
+      - name: founded_year
+        description: Year when the entity was founded.
+        data_type: int64
+
+      - name: is_israeli
+        description: >
+          Flag indicating whether the entity is Israeli.
+          1 = Israeli, 0 = Non-Israeli.
+        data_type: int64
+
+      - name: was_active
+        description: >
+          1 if entity was active during this year, 0 otherwise.
+          Active means: founded in or before this year AND (not closed OR closed in this year or later).
+        data_type: int64
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: was_opened_in_the_year
+        description: 1 if entity was founded in this specific year, 0 otherwise.
+        data_type: int64
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: was_closed_in_the_year
+        description: 1 if entity was closed in this specific year, 0 otherwise.
+        data_type: int64
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: is_active_today
+        description: 1 if entity is currently active (as of today), 0 otherwise.
+        data_type: int64
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          
+      - name: closed_date
+        description: date when the entity was closed.
+        data_type: date
+
+      - name: founded_date
+        description: date when the entity was founded.
+        data_type: date  
+
+      - name: disclosure_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: closed_reason
+        description: Reason for entity closure from ClosingEvent (e.g., Acquired, Shut Down, Merged, etc.).
+        data_type: string

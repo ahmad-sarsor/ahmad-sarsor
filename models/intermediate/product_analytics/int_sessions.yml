@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: int_sessions
+    description: |
+      Granularity: session_id, session_date  
+        
+      Filtered: removes records where session id is missing (null or -1)  
+        
+      This model creates a session-level view of user interactions by aggregating GA4 event data.  
+      It calculates session metrics (duration, engagement time), captures user journey sequences, and enriches with dimension data.  
+      For user identification, it selects the earliest valid user_id within each session.  
+      When multiple dimension values exist per session (e.g., different cities), it prioritizes paid marketing touchpoints, followed by longest duration and most recent events.  
+      The model also includes channel attribution logic and fraud detection capabilities.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_sessions)**
+    
+    config:
+      tags: ["Google Analytics 4", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        data_tests:
+          - not_null
+          - dbt_utils.not_accepted_values:
+              values: var("empty_session_id")
+
+      - name: session_date
+        description: '{{ doc("session_date") }}'
+        data_tests:
+          - not_null
+
+      - name: session_duration
+        description: '{{ doc("session_duration") }}'
+
+      - name: session_engagement_time
+        description: Total engagement time for the session
+
+      - name: is_new_user
+        description: Session had either event 'first_visit' or 'first_open'
+
+      - name: is_returning_user
+        description: Session had no event 'first_visit' nor 'first_open'
+
+      - name: landing_page
+        description: page_location value of 'session_start' event

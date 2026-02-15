@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: int_search_filters
+    description: |
+      Granularity: event_date, session_id, event_id, filter_name, filter_value  
+
+      This model captures detailed information about search-related user activity on the platform,  
+      combining raw GA4 event data with semantic search metadata, parsed query parameters,  
+      classification details, and enriched user/session attributes.  
+
+      The logic handles:
+      - Deduplication of sequential page views using `page_title` and `page_location`
+      - Identification of new search actions based on time gaps, semantic ID changes, or tab/context switches
+      - Merging semantic search input and AI-generated analysis from MySQL
+      - Parsing and transforming URL query parameters into structured filters (with classification hierarchy)
+      - Tracking tabs clicked and profiles viewed during each search
+      - Assigning search-level IDs (`search_id`) to group multiple GA4 events under a single intent
+      - Handling both structured (param-based) and semantic (AI-assisted) search
+
+      Filter names are standardized and mapped to a controlled vocabulary to ensure consistency across analyses.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_search_filters)**
+
+    config:
+      tags: ["Google Analytics 4", "Search", "Semantic Search", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+          
+      - name: search_id
+        description: >
+          A composite key representing a single search session, based on session_id, session_date, and rank.
+          Groups all search-related activity (filters, profile views, tab clicks) under a single intent.
+
+      - name: filter_name
+        description: "The raw filter key parsed from the URL or semantic metadata."
+
+      - name: filter_value
+        description: "The value associated with a search filter (e.g. sector, tag, location)."
+
+      - name: filter
+        description: >
+          A cleaned, human-readable name of the filter (e.g. 'Target Customer'), derived from `filter_name`.
+
+      - name: classification_name
+        description: >
+          If the filter value is a classification ID, this column contains the mapped classification name (e.g. 'AgTech').
+
+      - name: classification_parent_name
+        description: >
+          If applicable, the root-level classification parent (e.g. 'Agriculture') for grouped analysis.
+
+      - name: semantic_user_input
+        description: "User-entered text input in a semantic (AI-powered) search."
+
+      - name: semantic_ai_analysis
+        description: "AI-generated summary or intent derived from the user input."
+
+      - name: profiles_viewed
+        description: "A string of company URL names the user clicked into during this search."
+
+      - name: tabs_clicked
+        description: "List of tabs clicked within the search or profile visit context."
+
+      - name: profile
+        description: >
+          Indicates the type of entities searched for (e.g. Company, Investor, Hub),
+          derived from the grouped page path.
+
+      - name: is_semantic_search
+        description: "Boolean flag identifying whether the search used the AI semantic engine."

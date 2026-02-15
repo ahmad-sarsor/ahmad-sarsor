@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: int_users
+    description: |
+      Granularity: user_id, user_pseudo_id  
+      
+      Combines user data from GA4 and MySQL sources to create a unified user profile.  
+      It includes inferred signup behavior, company association, geo and marketing dimensions,  
+      and entity classification (like investor, startup, service provider, etc.)  
+
+      Complex logic includes:
+      - Deriving signup flows and platforms from event data
+      - Merging pseudo and actual user IDs across systems
+      - Enriching users with company and entity metadata
+      - Classifying users into standard segments using rule-based and probabilistic logic
+
+      * GA4 tables:
+        - stg_ga4__events_unnested
+        Has the most recent dimensions for each user.  
+
+      * MySQL tables:
+        - stg_mysql__new_user
+        - stg_mysql__new_company
+        - stg_mysql__new_member
+      Using new_member to match each user to its most recently added company.  
+
+      Filtered:
+        - exclude users where both user_id and user_pseudo_id is missing (-1)
+        - keep the most recent record per user_id + user_pseudo_id,  
+          where registered users + earliest signup date take precedence
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_users)**
+
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+        data_tests:
+          - not_null
+      
+      - name: user_pseudo_id
+        description: '{{ doc("user_pseudo_id") }}'
+        data_tests:
+          - not_null
+
+      - name: is_user_id_generated
+        description: Boolean flag indicating whether the user_id was generated
+
+      - name: is_user_pseudo_id_generated
+        description: Boolean flag for generated pseudo ID in GA4
+
+      - name: signup_platform
+        description: |
+          Based on GA4 'profile_data' (event) + 'platform' (key).  
+          Using the first occurrence per user_id + user_pseudo_id
+
+      - name: signup_start_datetime
+        description: |
+          Based on GA4 'sign_up' (event) + 'Sign Up' (key).  
+          Using the most recent occurrence per user_id + user_pseudo_id
+
+      - name: is_signup_complete
+        description:  |
+          Based on GA4 'profile_data' (event) + 'complete submit' / 'complete skip' (string_value).  
+          True if happens at least once, otherwise False (per user_id + user_pseudo_id)
+
+      - name: signup_complete_datetime
+        description: |
+          Based on GA4 'profile_data' (event) + 'complete submit' / 'complete skip' (string_value).  
+          Using the most recent occurrence per user_id + user_pseudo_id
+
+      - name: user_signup_date
+        description: |
+          Based on MySQL 'user_signup_date' if exists,  
+          otherwise GA4 'signup_complete_datetime'
+
+      - name: is_user_registered
+        description: |
+          If the user tried to signup using SSO (google, google one-tap, linkedin),  
+          check if he completed the process (ga4 'sign_up' event with 'complete' value).  
+            
+          Otherwise, check if the user tried to signup using 'email' (or has a MySQL signup_date),  
+          and then assert that either the password is empty, or that the email was validated
+
+      - name: channel_grouping
+        descripion: Determine the underlying traffic source based on 'source' and 'medium' 
+
+      - name: snc_region
+        descripion: Normalize the geographic region of the user
+
+      - name: snc_target
+
+      - name: entity_analysis_type
+        description: Inferred type of entity the user is associated with (from entity analysis)
+
+      - name: entity_analysis_sector
+        description: Inferred sector the user is associated with
+
+      - name: derived_user_type
+        descripion: |
+          Final classification of the user, inferred through a rule-based and probabilistic logic system.  
+          Based on:
+            - company_type
+            - user_type
+            - entity_analysis_type
+            - user_primary_usage

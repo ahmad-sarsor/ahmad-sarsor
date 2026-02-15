@@ -1,0 +1,207 @@
+version: 2
+
+models:
+  - name: investors
+    description: |
+      Investors mart model containing enriched investor data with investment metrics,
+      portfolio analysis, and exit tracking.
+      Supports Israeli Tech Ecosystem reports for Startup Nation Central.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [investor_id]
+        warn_unenforced: false
+
+    columns:
+      - name: investor_id
+        description: Unique identifier for the investor.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: investor_name
+        description: Name of the investor entity.
+        data_type: string
+
+      - name: investor_type
+        description: Type of investor (VC, Angel, Corporate VC, Private Equity, etc.).
+        data_type: string
+
+      - name: is_active
+        description: Whether the investor is currently active.
+        data_type: int64
+
+      - name: investor_country
+        description: Country where the investor is headquartered.
+        data_type: string
+
+      - name: is_israeli
+        description: Whether the investor is an Israeli-based entity.
+        data_type: int64
+
+      - name: closed_year
+        description: Year when the investor entity was closed.
+        data_type: int64
+
+      - name: closed_month
+        description: Month when the investor entity was closed.
+        data_type: int64
+
+      - name: is_claimed
+        description: Whether the investor profile has been claimed.
+        data_type: int64
+
+      - name: claimed_date
+        description: Date when the profile was claimed.
+        data_type: date
+
+      - name: representing_of_name
+        description: Name of the parent organization this investor represents.
+        data_type: string
+
+      - name: num_members
+        description: Total number of team members associated with the investor.
+        data_type: int64
+
+      - name: num_claimed_members
+        description: Number of team members who have claimed their profiles.
+        data_type: int64
+
+      - name: num_followers
+        description: Number of users following this investor on the platform.
+        data_type: INT64
+
+      - name: register_id
+        description: Israeli company registry ID.
+        data_type: string
+
+      - name: crunchbase_id
+        description: Crunchbase identifier for the investor.
+        data_type: string
+
+      - name: last_investment_date
+        description: Date of the investor's most recent investment.
+        data_type: date
+
+      - name: num_investments
+        description: Total number of investment rounds participated in.
+        data_type: int64
+
+      - name: num_startups_invested
+        description: Total number of unique startups in the investor's portfolio.
+        data_type: int64
+
+      - name: exited_startups
+        description: Number of portfolio companies that have had an exit (M&A, IPO).
+        data_type: int64
+
+      - name: angel_user_name
+        description: Full name of the angel investor (for angel type entities).
+        data_type: string
+
+      - name: angel_user_email
+        description: Email of the angel investor.
+        data_type: string
+
+      - name: creator_id
+        description: ID of the user who created the investor record.
+        data_type: string
+
+      - name: creator_name
+        description: Name of the user who created the investor record.
+        data_type: string
+
+      - name: creator_email
+        description: Email of the user who created the investor record.
+        data_type: string
+
+      - name: created_date
+        description: Date when the investor record was created.
+        data_type: date
+
+      - name: last_modifier_id
+        description: ID of the user who last modified the record.
+        data_type: string
+
+      - name: last_modified_date
+        description: Date when the record was last modified.
+        data_type: date
+
+      - name: bi_verify_key
+        description: Key of the BI user who verified the investor data.
+        data_type: string
+
+      - name: bi_verify_name
+        description: Name of the BI user who verified the investor data.
+        data_type: string
+
+      - name: bi_verify_email
+        description: Email of the BI user who verified the investor data.
+        data_type: string
+
+      - name: bi_verify_date
+        description: Date when the investor data was verified by BI.
+        data_type: date
+
+      - name: finder_url
+        description: Finder URL to the investor profile.
+        data_type: string
+
+      - name: logo_url
+        description: URL to the investor logo image.
+        data_type: string
+
+      - name: description
+        description: Full description of the investor entity.
+        data_type: string
+
+      - name: short_description
+        description: Short tagline or description of the investor.
+        data_type: string
+
+      - name: common_misspellings
+        description: Comma-separated list of alternative names, spelling variations, 
+          and former names for the entity
+          Used for fuzzy matching and search.
+        data_type: STRING
+
+      - name: website
+        description: Investor website URL.
+        data_type: string
+
+      - name: teams_page
+        description: URL to the investor's team page.
+        data_type: string
+
+      - name: email_domain
+        description: Primary email domain of the investor.
+        data_type: string
+
+      - name: hide_reason
+        description: Reason for hiding the investor profile (if applicable).
+        data_type: string
+
+      - name: disclosure_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: industry_preferences
+        description: Sectors the investor has declared focus on in their profile.
+        data_type: string
+
+      - name: actual_sector
+        description: Actual sectors based on portfolio company analysis.
+        data_type: string
+
+      - name: actual_stage
+        description: Actual stages based on investment round participation.
+        data_type: string
+
+      - name: target_investment_stages
+        description: Preferred investment stages as defined by the investor in their profile.
+        data_type: string

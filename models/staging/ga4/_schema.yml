@@ -1,0 +1,62 @@
+version: 2
+
+models:
+
+  - name: stg_ga4__events_user_properties_flattened
+    description: Flattened GA4 user properties data
+    columns:
+      - name: user_property_id
+        description: Unique identifier for the user property
+        data_tests:
+          - unique
+          - not_null
+      - name: user_id
+        description: User ID
+      - name: user_pseudo_id
+        description: Pseudonymous User ID
+        data_tests:
+          - not_null
+
+  - name: stg_ga4__pseudo_users_audiences
+    description: GA4 pseudonymous users audience data
+    columns:
+      - name: audience_membership_id
+        description: Unique identifier for the audience membership
+        data_tests:
+          - unique
+          - not_null
+      - name: pseudo_user_id
+        description: Pseudonymous User ID
+        data_tests:
+          - not_null
+
+  - name: stg_ga4__pseudo_users_flatten
+    description: Flattened GA4 pseudonymous users data
+    columns:
+      - name: pseudo_user_id
+        description: Unique identifier for the pseudonymous user
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_ga4__users_audiences
+    description: GA4 users audience data
+    columns:
+      - name: audience_membership_id
+        description: Unique identifier for the audience membership
+        data_tests:
+          - unique
+          - not_null
+      - name: user_id
+        description: User ID
+        data_tests:
+          - not_null
+
+  - name: stg_ga4__users_flatten
+    description: Flattened GA4 users data
+    columns:
+      - name: user_id
+        description: Unique identifier for the user
+        data_tests:
+          - unique
+          - not_null

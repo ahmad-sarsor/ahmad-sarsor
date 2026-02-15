@@ -1,0 +1,218 @@
+version: 2
+
+models:
+  - name: multinationals
+    description: |
+      Multinationals mart model containing enriched multinational corporation data with
+      acquisition metrics, employee counts, and market data.
+      Supports Israeli Tech Ecosystem reports for Startup Nation Central.
+
+    config:
+      tags: ["ecosystem"]
+      contract:
+        enforced: true
+    
+    constraints:
+      - type: primary_key
+        columns: [mnc_id]
+        warn_unenforced: false
+
+    columns:
+      - name: mnc_id
+        description: Unique identifier for the multinational corporation.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: mnc_name
+        description: Name of the multinational corporation.
+        data_type: string
+
+      - name: mnc_country
+        description: Country where the multinational is headquartered.
+        data_type: string
+
+      - name: is_active
+        description: Whether the multinational is currently active in Israel (1) or closed (0).
+        data_type: int64
+
+      - name: founded_year
+        description: Year the multinational was founded.
+        data_type: int64
+
+      - name: founded_month
+        description: Month the multinational was founded.
+        data_type: int64
+
+      - name: closing_in_israel_year
+        description: Year when the multinational closed its Israel operations.
+        data_type: int64
+
+      - name: closing_in_israel_month
+        description: Month when the multinational closed its Israel operations.
+        data_type: int64
+
+      - name: is_claimed
+        description: Whether the multinational profile has been claimed.
+        data_type: int64
+
+      - name: claimed_date
+        description: Date when the profile was claimed.
+        data_type: date
+
+      - name: num_members
+        description: Total number of team members associated with the multinational.
+        data_type: int64
+
+      - name: num_claimed_members
+        description: Number of team members who have claimed their profiles.
+        data_type: int64
+
+      - name: num_followers
+        description: Number of users who added this multinational to their watchlist.
+        data_type: int64
+
+      - name: crunchbase_id
+        description: Crunchbase identifier for the multinational.
+        data_type: string
+
+      - name: last_acquisition_date
+        description: Date of the multinational's most recent acquisition of an Israeli company.
+        data_type: date
+
+      - name: total_acquisitions
+        description: Total number of Israeli companies acquired by this multinational.
+        data_type: int64
+
+      - name: total_acquisition_amount
+        description: Total amount spent on Israeli acquisitions (in USD).
+        data_type: int64
+
+      - name: israeli_employees_exact
+        description: Exact employee count in Israel.
+        data_type: int64
+
+      - name: israeli_employees_range
+        description: Employee count range in Israel.
+        data_type: string
+
+      - name: global_employees_exact
+        description: Exact global employee count.
+        data_type: int64
+
+      - name: global_employees_range
+        description: Global employee count range.
+        data_type: string
+
+      - name: in_israel_since_year
+        description: Year the multinational established presence in Israel.
+        data_type: int64
+
+      - name: in_israel_since_month
+        description: Month the multinational established presence in Israel.
+        data_type: int64
+
+      - name: market_cap
+        description: Market capitalization (in USD).
+        data_type: int64
+
+      - name: market_cap_update
+        description: Date when market cap was last updated.
+        data_type: datetime
+
+      - name: arms
+        description: Comma-separated list of corporate arms in Israel.
+        data_type: string
+
+      - name: investor_arm_name
+        description: Name of the investment arm associated with this multinational.
+        data_type: string
+
+      - name: creator_id
+        description: ID of the user who created the multinational record.
+        data_type: string
+
+      - name: creator_name
+        description: Name of the user who created the multinational record.
+        data_type: string
+
+      - name: creator_email
+        description: Email of the user who created the multinational record.
+        data_type: string
+
+      - name: created_date
+        description: Date when the multinational record was created.
+        data_type: date
+
+      - name: last_modifier_id
+        description: ID of the user who last modified the record.
+        data_type: string
+
+      - name: last_modified_date
+        description: Date when the record was last modified.
+        data_type: date
+
+      - name: bi_verify_key
+        description: Key of the BI user who verified the multinational data.
+        data_type: string
+
+      - name: bi_verify_name
+        description: Name of the BI user who verified the multinational data.
+        data_type: string
+
+      - name: bi_verify_email
+        description: Email of the BI user who verified the multinational data.
+        data_type: string
+
+      - name: bi_verify_date
+        description: Date when the multinational data was verified by BI.
+        data_type: date
+
+      - name: finder_url
+        description: Finder URL to the multinational profile.
+        data_type: string
+
+      - name: logo_url
+        description: URL to the multinational logo image.
+        data_type: string
+
+      - name: logo
+        description: Logo file name.
+        data_type: string
+
+      - name: description
+        description: Full description of the multinational entity.
+        data_type: string
+
+      - name: short_description
+        description: Short tagline or description of the multinational.
+        data_type: string
+
+      - name: common_misspellings
+        description: Comma-separated list of alternative names, spelling variations, 
+          and former names for the entity
+          Used for fuzzy matching and search.
+        data_type: STRING
+
+      - name: website
+        description: Multinational website URL.
+        data_type: string
+
+      - name: email_domain
+        description: Primary email domain of the multinational.
+        data_type: string
+
+      - name: hide_reason
+        description: Reason for hiding the multinational profile (if applicable).
+        data_type: string
+
+      - name: disclosure_level
+        description: |
+          Data disclosure level for reports and aggregations:
+          - all: Publish name and include in calculations
+          - aggregation: Include in calculations only (no name)
+          - none: Exclude entirely from reports
+        data_type: string

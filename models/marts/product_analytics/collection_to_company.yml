@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: collection_to_company
+    description: |
+      Granularity: record_id  
+
+      This table represents the relationship between Watchlists and companies added to them.  
+      It joins metadata about collections, company details, and grouping information to provide a full context of each companys presence within a list.  
+      Each row represents a single company associated with a specific collection (and optionally a group within the collection).  
+      The model is built from raw MySQL staging tables and enriched with company dimensions from the intermediate layer.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3scollection_to_company)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+        
+      - name: company_list_order
+        description: Position/order of the company within the collection, used for manual sorting or display.
+
+      - name: company_added_datetime
+        description: Timestamp when the company was added to the collection.
+
+      - name: note
+        description: Free-text user note attached to the company within the collection.
+
+      - name: note_created_or_modified_datetime
+        description: Timestamp when the note was created or last modified.
+
+      - name: group_id
+        description: ID of the group within the collection that the company belongs to, if applicable.
+
+      - name: group_name
+        description: Name of the group the company is assigned to within the collection.
+
+      - name: group_entity_type
+        description: Entity type associated with the group (e.g., company, investor, etc.).
+
+      - name: group_description
+        description: Description of the group used to organize companies within the collection.
+
+      - name: group_created_or_modified_datetime
+        description: Timestamp when the group was created or last modified.
+
+      - name: list_created_datetime
+        description: Timestamp when the collection was initially created.
+
+      - name: list_last_modified_datetime
+        description: Timestamp when the collection was last modified.

@@ -1,0 +1,300 @@
+version: 2
+
+models:
+  - name: companies
+    description: |
+      Companies mart model containing enriched company data with funding metrics, 
+      acquisition history, and sector classifications.
+      Supports Israeli Tech Ecosystem reports for Startup Nation Central.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [company_id]
+        warn_unenforced: false
+
+    columns:
+      - name: company_id
+        description: Unique identifier for the company.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: company_name
+        description: Name of the company.
+        data_type: string
+
+      - name: company_type
+        description: Type of the company .
+        data_type: string
+
+      - name: company_sub_type
+        description: Sub-type of the company.
+        data_type: string
+
+      - name: primary_sector_name
+        description: Primary sector classification of the company.
+        data_type: string
+
+      - name: primary_sector_short_name
+        description: Short name of the primary sector for display purposes.
+        data_type: string
+
+      - name: sectors
+        description: Aggregated list of all sectors associated with the company (JSON array format).
+        data_type: string
+
+      - name: sub_sectors
+        description: Aggregated list of all sub-sectors associated with the company (JSON array format).
+        data_type: string
+
+      - name: sub_sub_sectors
+        description: Aggregated list of all sub-sub-sectors associated with the company (JSON array format).
+        data_type: string
+
+      - name: is_active
+        description: Whether the company is currently active.
+        data_type: int64
+
+      - name: company_country
+        description: Country of the company.
+        data_type: string
+
+      - name: is_israeli
+        description: whether the company is an Israeli company.
+        data_type: INT64
+
+      - name: founded_year
+        description: Year the company was founded.
+        data_type: int64
+
+      - name: founded_month
+        description: Month the company was founded.
+        data_type: int64
+
+      - name: closed_date
+        description: date the company was closed.
+        data_type: date
+
+
+      - name: closed_year
+        description: Year the company was closed.
+        data_type: int64
+
+      - name: closed_month
+        description: Month the company was closed.
+        data_type: int64
+
+      - name: is_claimed
+        description: Whether the company profile has been claimed.
+        data_type: int64
+
+      - name: claimed_date
+        description: Date when the company profile was claimed.
+        data_type: date
+
+      - name: num_members
+        description: Total number of members associated with the company.
+        data_type: INT64
+
+      - name: num_claimed_members
+        description: Total number of claimed members associated with the company.
+        data_type: INT64
+
+      - name: num_followers
+        description: Total number of followers of the company.
+        data_type: INT64
+
+      - name: market_cap
+        description: Market capitalization of the company in USD.
+        data_type: int64
+
+      - name: market_cap_date
+        description: Date and time of the market capitalization value.
+        data_type: datetime
+
+      - name: register_id
+        description: Israeli company registration ID.
+        data_type: string
+
+      - name: crunchbase_id
+        description: Crunchbase identifier for the company.
+        data_type: string
+
+      - name: israeli_employees_exact
+        description: Exact number of employees in Israel.
+        data_type: int64
+
+      - name: israeli_employees_range
+        description: Range of Israeli employees.
+        data_type: string
+
+      - name: global_employees_exact
+        description: Exact number of global employees.
+        data_type: int64
+
+      - name: global_employees_range
+        description: Range of global employees.
+        data_type: string
+
+      - name: product_stage
+        description: Current product development stage of the company.
+        data_type: string
+
+      - name: funding_stage
+        description: Stage of the company's funding.
+        data_type: string
+
+      - name: private_funding_amount
+        description: Total amount of private funding raised in USD.
+        data_type: int64
+
+      - name: last_private_funding_date
+        description: Date of the company's last private funding.
+        data_type: date
+
+      - name: is_acquired
+        description: Whether the company has been acquired.
+        data_type: INT64
+
+      - name: is_exited
+        description: Whether the company has had an exit event.
+        data_type: INT64
+
+      - name: exited_date
+        description: Date of the exit event.
+        data_type: date
+
+      - name: last_acquisition_date
+        description: Date when the company was last acquired.
+        data_type: date
+
+      - name: last_acquirer_id
+        description: Identifier of the last acquirer.
+        data_type: string
+
+      - name: last_acquirer_name
+        description: Name of the last acquirer.
+        data_type: string
+
+      - name: last_acquired_amount
+        description: Amount of the last acquisition.
+        data_type: int64
+
+      - name: last_acquirer_country
+        description: Country of the last acquirer.
+        data_type: string
+
+      - name: was_acquired_count
+        description: Number of times this company was acquired.
+        data_type: int64
+
+      - name: acquired_other_count
+        description: Number of companies this company has acquired.
+        data_type: int64
+
+      - name: creator_id
+        description: ID of the user who created the company.
+        data_type: string
+
+      - name: creator_name
+        description: Name of the user who created the company.
+        data_type: string
+
+      - name: creator_email
+        description: Email of the user who created the company.
+        data_type: string
+
+      - name: created_date
+        description: Date when the company record was created.
+        data_type: date
+
+      - name: last_modifier_id
+        description: ID of the user who last modified the company record.
+        data_type: string
+
+      - name: last_modified_date
+        description: Date when the company record was last modified.
+        data_type: date
+
+      - name: bi_verify_key
+        description: Key of the BI user who verified the company data.
+        data_type: string
+
+      - name: bi_verify_name
+        description: Name of the BI user who verified the company data.
+        data_type: string
+
+      - name: bi_verify_email
+        description: Email of the BI user who verified the company data.
+        data_type: string
+
+      - name: bi_verify_date
+        description: Date when the company data was verified by BI.
+        data_type: date
+
+      - name: finder_url
+        description: Finder URL to the company profile.
+        data_type: string
+
+      - name: logo_url
+        description: URL to the company logo image.
+        data_type: string
+
+      - name: description
+        description: Full description of the company.
+        data_type: string
+
+      - name: short_description
+        description: Short tagline or description of the company.
+        data_type: string
+
+      - name: common_misspellings
+        description: Comma-separated list of alternative names, spelling variations, 
+          and former names for the entity
+          Used for fuzzy matching and search.
+        data_type: STRING
+
+      - name: website
+        description: Company website URL.
+        data_type: string
+
+      - name: careers_page
+        description: URL to the company careers page.
+        data_type: string
+
+      - name: email_domain
+        description: Primary email domain of the company.
+        data_type: string
+
+      - name: hide_reason
+        description: Reason for hiding the company profile (if applicable).
+        data_type: string
+
+      - name: disclosure_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: business_model
+        description: Company business models (e.g., B2B, B2C, SaaS), comma-separated
+        data_type: STRING
+
+      - name: geographic_markets
+        description: Company target markets (e.g., North America, Europe), comma-separated
+        data_type: STRING
+      
+      - name: total_rounds
+        description: Number of funding rounds the company has participated in.
+        data_type: INT64
+
+      - name: total_funding_amount
+        description: Total funding amount (private + public) raised by the company in USD.
+        data_type: INT64
+
+      - name: total_private_rounds
+        description: Number of private funding rounds the company has participated in.
+        data_type: INT64

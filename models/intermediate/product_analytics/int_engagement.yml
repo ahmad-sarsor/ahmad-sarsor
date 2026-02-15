@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: int_engagement
+    description: |
+      Aggregates GA4 event-level data to compute user engagement metrics per session and day.  
+      Engagement time is normalized to seconds, and values are grouped by user/session granularity.  
+      Only sessions with valid (non-empty) IDs are included.  
+      This model supports downstream engagement analytics.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_engagement)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: event_id
+        description: '{{ doc("event_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: engagement_time_seconds
+        description: "{{ doc('engagement_time_seconds') }}"

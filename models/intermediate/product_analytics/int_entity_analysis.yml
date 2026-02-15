@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: int_entity_analysis
+    description: >
+      Provides the latest entity analysis details per user by joining user analysis records with entity metadata.  
+      For each user, only the most recent analysis entry (based on `created_date`) is retained.  
+      This ensures a one-to-one mapping of users to their latest entity-level classification data.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_entity_analysis)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: user_id
+        description: User associated with the entity analysis
+
+      - name: entity_analysis_name
+        description: Name or label of the analyzed entity linked to the user
+
+      - name: entity_analysis_sector
+        description: Sector classification of the entity
+
+      - name: entity_analysis_type
+        description: Type or category of the analyzed entity

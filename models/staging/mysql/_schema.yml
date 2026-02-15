@@ -1,0 +1,114 @@
+version: 2
+
+models:
+
+  - name: stg_mysql__collection
+    description: Collections (public / watchlists, saved searches) clean data
+    columns:
+      - name: collection_id
+        description: Primary identifier for collections
+
+      - name: creator_id
+        description: ID of user who created the collection
+
+      - name: owner_id
+        description: ID of user who owns the collection
+
+  - name: stg_mysql__new_user
+    description: Staged user data from MySQL
+    columns:
+      - name: user_id
+        description: Unique identifier for the user
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_mysql__base_classification_company_model
+    description: Base classification company model data
+    columns:
+      - name: id
+        description: Unique identifier for the classification company
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_mysql__base_classification_model
+    description: Base classification model data
+    columns:
+      - name: classification_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_mysql__base_classification_relation_model
+    description: Base classification relation model data
+    columns:
+      - name: id
+        description: Unique identifier for the classification relation
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_mysql__hide_profile_reason
+    description: Hide profile reason data
+    columns:
+      - name: hide_reason_id
+        description: Unique identifier for the hide reason
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_mysql__new_company
+    description: Company data
+    columns:
+      - name: company_id
+        description: Unique identifier for the company
+        data_tests:
+          - not_null
+
+  - name: stg_mysql__new_company_alternative_names
+    description: Company alternative names data
+    columns:
+      - name: company_id
+        description: Unique identifier for the company
+        
+  - name: stg_mysql__new_company_business_model
+    description: Company business model data
+    columns:
+      - name: company_id
+        description: Unique identifier for the company
+
+  - name: stg_mysql__new_company_israeli_address
+    description: Company Israeli address data
+    columns:
+      - name: entity_id
+        description: Unique identifier for the company
+        data_tests:
+          - not_null
+
+  - name: stg_mysql__new_company_tag
+    description: Company tag data
+    columns:
+      - name: tag_id
+        description: Unique identifier for the tag
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_mysql__base_event
+    description: Business events
+    config:
+      tags: 
+        - business
+
+  - name: stg_mysql__base_event_investors
+    description: Business events
+    config:
+      tags: 
+        - business
+
+  - name: stg_mysql__new_company_markets
+    description: Company target markets data
+    columns:
+      - name: company_id
+        description: Unique identifier for the company

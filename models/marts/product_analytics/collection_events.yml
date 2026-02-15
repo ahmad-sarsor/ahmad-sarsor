@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: collection_events
+    description: |
+      Granularity: user_id, list_id, action, action_datetime  
+
+      This fact table tracks detailed user interactions with Watchlists across various GA4 events.  
+      It enriches raw event data with contextual metadata (e.g. user session data, list info from collections),  
+      categorizes events into standardized action_category, action, and action_details,  
+      and supports event-level analytics for behavior and engagement monitoring.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3scollection_events)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+          
+      - name: action_category
+        description: High-level classification of user interaction (e.g. duplicate, view, export), based on event_name and its properties.
+          
+      - name: action
+        description: Refined version of event_name, contextually mapped using nested conditions.
+          
+      - name: action_details
+        description: Adds specificity (e.g. clicked elements, labels) to support granular interaction analysis
+
+      - name: device__browser
+        description: '{{ doc("device__browser") }}'
+
+      - name: device__browser_version
+        description: '{{ doc("device__browser_version") }}'
+
+      - name: device__category
+        description: '{{ doc("device__category") }}'
+
+      - name: device__language
+        description: '{{ doc("device__language") }}'
+
+      - name: device__mobile_brand_name
+        description: '{{ doc("device__mobile_brand_name") }}'
+
+      - name: device__mobile_marketing_name
+        description: '{{ doc("device__mobile_marketing_name") }}'
+
+      - name: device__mobile_model_name
+        description: '{{ doc("device__mobile_model_name") }}'
+
+      - name: device__mobile_os_hardware_model
+        description: '{{ doc("device__mobile_os_hardware_model") }}'
+
+      - name: device__operating_system
+        description: '{{ doc("device__operating_system") }}'
+
+      - name: device__operating_system_version
+        description: '{{ doc("device__operating_system_version") }}'
+
+      - name: geo__city
+        description: '{{ doc("geo__city") }}'
+
+      - name: geo__continent
+        description: '{{ doc("geo__continent") }}'
+
+      - name: geo__country
+        description: '{{ doc("geo__country") }}'
+
+      - name: geo__region
+        description: '{{ doc("geo__region") }}'
+
+      - name: geo__sub_continent
+        description: '{{ doc("geo__sub_continent") }}'
+
+      - name: marketing_source
+        description: '{{ doc("marketing_source") }}'
+
+      - name: marketing_medium
+        description: '{{ doc("marketing_medium") }}'
+
+      - name: marketing_campaign
+        description: '{{ doc("marketing_campaign") }}'
+
+      - name: marketing_campaignid
+        description: '{{ doc("marketing_campaignid") }}'
+
+      - name: marketing_date
+        description: '{{ doc("marketing_date") }}'
+
+      - name: marketing_company
+        description: '{{ doc("marketing_company") }}'
+
+      - name: marketing_region
+        description: '{{ doc("marketing_region") }}'
+
+      - name: marketing_channel
+        description: '{{ doc("marketing_channel") }}'
+
+      - name: marketing_details
+        description: '{{ doc("marketing_details") }}'
+
+      - name: marketing_objective
+        description: '{{ doc("marketing_objective") }}'
+
+      - name: marketing_campaign_group
+        description: '{{ doc("marketing_campaign_group") }}'
+
+      - name: channel_grouping
+        description: '{{ doc("channel_grouping") }}'

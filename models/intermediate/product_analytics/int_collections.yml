@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: int_collections
+    description: |
+      Intermediate view that standardizes collection (list) data from the MySQL `collection` table.  
+      This model renames fields to a consistent naming convention (`list_*`) and parses key metadata including creation and modification timestamps.  
+      It distinguishes between `creator_id` and `owner_id`, preserving both for downstream flexibility.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_collections)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: list_id
+        description: Unique identifier for the collection (list), derived from `collection_id`.
+
+      - name: owner_id
+        description: User ID of the list owner. May differ from the creator in some cases.
+
+      - name: creator_id
+        description: User ID of the user who originally created the list.
+
+      - name: list_name
+        description: Human-readable name for the collection.
+
+      - name: list_description
+        description: Free-text description of the list provided by the user.
+
+      - name: list_type
+        description: Type or category of the collection (e.g. dynamic, static).
+
+      - name: list_created_date
+        description: Date portion of the list creation timestamp.
+
+      - name: list_created_datetime
+        description: Full timestamp of when the list was created.
+
+      - name: list_last_modified_datetime
+        description: Timestamp when the list was last modified. Null if never modified after creation.

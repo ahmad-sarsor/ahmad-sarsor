@@ -1,0 +1,156 @@
+version: 2
+
+models:
+
+  - name: signups
+    description: |
+      Granularity: user_id, signup_platform, signup_type, signup_attempt  
+      
+      The `signups` table aggregates detailed information about user signups, combining data from Google Analytics 4 (GA4) and additional dimensions from MySQL.  
+      This table focuses on sign-up events, including specific event parameters extracted and pivoted for comprehensive analysis.  
+      Additionally, the table includes detailed columns related to the follow-up personal details form.  
+
+      Key fields include:
+      - **user_id**: A unique identifier for each user, used to link signups to specific users across different sessions and interactions.
+      - **signup_datetime**: The date and time when the signup occurred, providing a timestamp for when users completed their registration.
+      - **signup_platform**: The platform or method used for the signup, such as 'email', 'Google One-Tap', 'google', or 'linkedin', to understand the source of the signups.
+      - **signup_type**: Indicates whether the signup was from a 'new' user or a 'returning' user, helping differentiate between first-time registrations and returning users.
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3ssignups)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('int_users')
+              field: user_id
+          - dbt_utils.relationships_where:
+              to: ref('int_signups')
+              field: user_id
+              from_condition: session_id is not null
+
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+
+      - name: signup_platform
+        description: |
+          The platform or method used by the user to sign up.
+          This field categorizes the signup source into different types such as 'email', 'Google One-Tap', 'google', 'linkedin'.
+
+          It helps in understanding the channels through which users are registering:
+          * 'email' for signups completed via email invitation
+          * 'Google One-Tap' for signups using Google's One-Tap feature
+          * 'google' for signups through Google integration
+          * 'linkedin' for signups via LinkedIn
+
+      - name: signup_origin
+        description: Indicates where the signup process originated from.
+
+      - name: signup_attempt
+        description: Indicates the signup attempt number for user.
+
+      - name: page_location
+        description: '{{ doc("page_location") }}'
+
+      - name: page_title
+        description: '{{ doc("page_title") }}'
+
+      - name: signup_start_date
+        description: The date when the user started their signup process.
+
+      - name: signup_start_datetime
+        description: The timestamp when the user started their signup process.
+
+      - name: signup_complete_datetime
+        description: The timestamp when the user completed their signup process.
+
+      - name: signup_step__started__datetime_utc
+        description: The timestamp when the user started their signup process.
+
+      - name: signup_step__business_email__datetime_utc
+        description: The timestamp when the user provided their business email during the signup profile data form.
+
+      - name: signup_step__complete_skip__datetime_utc
+        description: The timestamp when the user skipped the submit step in the signup profile data form.
+
+      - name: signup_step__complete_submit__datetime_utc
+        description: The timestamp when the user completed and submitted the signup profile data form.
+
+      - name: signup_step__email_verification_sent__datetime_utc
+        description: The timestamp when the email verification was sent to the user.
+
+      - name: signup_step__name__datetime_utc
+        description: The timestamp when the user provided their name in the signup profile data form.
+
+      - name: signup_step__primary_usage__datetime_utc
+        description: The timestamp when the user specified their primary usage in the signup profile data form.
+
+      - name: signup_type
+        description: |
+          The type of user signup, categorized as either 'new' or 'returning'.
+          This field indicates whether the user is registering for the first time ('new') or returning to update their information or re-register ('returning').
+      
+      - name: user_first_name
+        description: '{{ doc("user_first_name") }}'
+
+      - name: user_last_name
+        description: '{{ doc("user_last_name") }}'
+
+      - name: user_gender
+        description: '{{ doc("user_gender") }}'
+
+      - name: user_email
+        description: '{{ doc("user_email") }}'
+
+      - name: is_password_empty
+        description: '{{ doc("is_password_empty") }}'
+
+      - name: is_email_validated
+        description: '{{ doc("is_email_validated") }}'
+
+      - name: is_user_confirmed
+        description: '{{ doc("is_user_confirmed") }}'
+
+      - name: is_user_registered
+        description: '{{ doc("is_user_registered") }}'
+
+      - name: user_signup_date
+        description: The date when the user signed up
+
+      - name: is_snc_employee
+        description: '{{ doc("is_snc_employee") }}'
+
+      - name: snc_region
+        description: '{{ doc("snc_region") }}'
+
+      - name: snc_target
+        description: '{{ doc("snc_target") }}'
+
+      - name: israeli
+        description: '{{ doc("israeli") }}'
+
+      - name: user_primary_usage
+        description: '{{ doc("user_primary_usage") }}'
+
+      - name: user_type
+        description: '{{ doc("user_type") }}'
+
+      - name: derived_user_type
+        description: '{{ doc("derived_user_type") }}'

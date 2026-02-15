@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: event_monitoring_weekly
+    description: >
+      Analyzes event patterns over time, comparing recent periods to historical data
+      and identifying significant changes in event volumes and user engagement.
+      This mart provides monitoring insights for event tracking and anomaly detection.
+    config:
+      materialized: table
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: event_name
+        description: The name of the GA4 event
+        tests:
+          - not_null
+      
+      - name: event_key
+        description: The specific event parameter key (action, label, type) or NULL for overall event counts
+      
+      - name: event_value
+        description: The value of the event parameter or NULL for overall event counts
+      
+      - name: hist_avg_daily_events
+        description: Average daily event count in the historical period
+        tests:
+          - not_null
+      
+      - name: hist_total_events
+        description: Total event count in the historical period
+        tests:
+          - not_null
+      
+      - name: recent_avg_daily_events
+        description: Average daily event count in the recent period
+        tests:
+          - not_null
+      
+      - name: recent_total_events
+        description: Total event count in the recent period
+        tests:
+          - not_null
+      
+      - name: pct_change
+        description: Percentage change from historical to recent period

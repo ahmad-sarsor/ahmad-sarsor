@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: sector_classification
+    description: Sector classifications for companies in the Israeli tech ecosystem.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [company_sector_id]
+        warn_unenforced: false
+
+    columns:
+      - name: company_sector_id
+        description: Unique identifier for each company-sector combination.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: company_id
+        description: Foreign key to the company entity.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('companies')
+              field: company_id
+              config:
+                severity: warn
+
+      - name: company_name
+        description: Name of the company.
+        data_type: string
+
+      - name: sector
+        description: Primary sector classification (e.g., Cyber, Health Tech, Fintech).
+        data_type: string
+
+      - name: sub_sector
+        description: Secondary sector classification within the primary sector.
+        data_type: string
+
+      - name: sub_sub_sector
+        description: Tertiary sector classification for granular categorization.
+        data_type: string

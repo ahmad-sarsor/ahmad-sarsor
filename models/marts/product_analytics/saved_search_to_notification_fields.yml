@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: saved_search_to_notification_fields
+    description: |
+      Granularity: notification_id, saved_search_id, notification_field  
+
+      Maps saved searches to their associated notification fields.  
+      Unnests the comma-separated list of fields tracked in each notification and enriches with saved search metadata.  
+      This model allows for analysis of which fields are being monitored in user-defined saved search lists for changes,  
+      along with timing and frequency of notifications.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3ssaved_search_to_notification_fields)**
+
+    config:
+      tags: ["Google Analytics 4", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: saved_search_id
+        description: >
+          Identifier of the saved search list to which the notification is linked.
+
+      - name: saved_search_created_datetime
+        description: >
+          Timestamp when the saved search was originally created. Joined from the
+          saved search metadata table.
+
+      - name: saved_search_last_modified_datetime
+        description: >
+          Timestamp of the last modification to the saved search.
+
+      - name: notification_id
+        description: Unique ID of the notification configuration associated with the saved search.
+
+      - name: notification_interval_days
+        description: >
+          Frequency (in days) at which the system checks and sends notifications for
+          the saved search, if applicable.
+
+      - name: notification_field
+        description: >
+          Individual field being tracked by the notification. Extracted by unnesting
+          the comma-separated `fields` column in the raw data.
+
+      - name: last_notification_datetime
+        description: >
+          Timestamp when the notification was last triggered for this saved search.
+
+      - name: notification_created_datetime
+        description: >
+          Timestamp when the notification configuration was first created.

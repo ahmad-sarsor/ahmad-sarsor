@@ -1,0 +1,183 @@
+version: 2
+
+models:
+  - name: acquisitions
+    description: M&A events involving Israeli tech companies.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [event_id]
+        warn_unenforced: false
+
+    columns:
+      - name: event_id
+        description: Unique identifier for each M&A event.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: mna_type
+        description: Type of merger or acquisition.
+        data_type: string
+
+      - name: event_date
+        description: Date when the M&A event occurred.
+        data_type: date
+
+      - name: event_year
+        description: Year when the M&A event occurred.
+        data_type: int64
+
+      - name: amount
+        description: Transaction value in USD.
+        data_type: int64
+
+      - name: deal_size_category
+        description: Category of deal size (Small <100M, Medium 100M-1B, Large 1B+).
+        data_type: string
+
+      - name: acquired_id
+        description: Unique identifier for the acquired company.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('companies')
+              field: company_id
+              config:
+                severity: warn
+
+      - name: acquired_name
+        description: Name of the acquired company.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: acquired_is_active
+        description: Whether the acquired company is still active.
+        data_type: int64
+
+      - name: acquired_primary_sector
+        description: Primary sector of the acquired company.
+        data_type: string
+
+      - name: acquired_finder_url
+        description: Finder URL for the acquired company.
+        data_type: string
+
+      - name: acquired_logo_url
+        description: Logo URL for the acquired company.
+        data_type: string
+
+      - name: disclosure_acquired_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: acquired_hide_reason
+        description: Reason for hiding the acquired company from reports.
+        data_type: string
+
+      - name: is_exit
+        description: Whether this acquisition qualifies as an exit event.
+        data_type: int64
+
+      - name: is_first_mna
+        description: Whether this is the first M&A event for the acquired company.
+        data_type: int64
+
+      - name: acquirer_id
+        description: Unique identifier for the acquiring entity.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: acquirer_name
+        description: Name of the acquiring entity.
+        data_type: string
+
+      - name: acquirer_type
+        description: Type of the acquiring entity.
+        data_type: string
+
+      - name: acquirer_sub_type
+        description: Sub-type of the acquiring entity.
+        data_type: string
+
+      - name: acquirer_is_active
+        description: Whether the acquiring entity is still active.
+        data_type: int64
+
+      - name: acquirer_country
+        description: Country of the acquiring entity.
+        data_type: string
+
+      - name: acquirer_is_israeli
+        description: Whether the acquiring entity is Israeli.
+        data_type: int64
+
+      - name: first_acquirer_acquisition_date
+        description: Date of the acquirer's first acquisition ever.
+        data_type: date
+
+      - name: acquirer_experience_tier
+        description: Experience tier of the acquirer based on acquisition history (First Acquisition, 2-5 Acquisition, 6+ Acquisition).
+        data_type: string
+
+      - name: acquirer_category
+        description: Category of acquirer (Financial Acquirer, Strategic Acquirer, Israeli Company, Other).
+        data_type: string
+
+      - name: acquirer_finder_url
+        description: Finder URL for the acquiring entity.
+        data_type: string
+
+      - name: acquirer_logo_url
+        description: Logo URL for the acquiring entity.
+        data_type: string
+
+      - name: disclosure_acquirer_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: acquirer_hide_reason
+        description: Reason for hiding the acquirer from reports.
+        data_type: string
+
+      - name: source
+        description: Source of the M&A event information.
+        data_type: string
+
+      - name: event_created_date
+        description: Date when the M&A event was created.
+        data_type: date
+
+      - name: event_creator_name
+        description: Name of the user who created the M&A event.
+        data_type: string
+
+      - name: event_creator_email
+        description: Email of the user who created the M&A event.
+        data_type: string
+
+      - name: event_updated_date
+        description: Date and time when the M&A event was last updated.
+        data_type: datetime
+
+      - name: event_updater_name
+        description: Name of the user who last updated the M&A event.
+        data_type: string
+
+      - name: event_updater_email
+        description: Email of the user who last updated the M&A event.
+        data_type: string

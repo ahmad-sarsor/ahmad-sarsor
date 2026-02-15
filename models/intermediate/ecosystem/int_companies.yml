@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: int_companies
+    description: |
+      Enriches raw company records with classification metadata from the BaseClassificationModel,
+      supporting downstream use cases like sector-based reporting or aggregation.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_companies)**
+
+    config:
+      tags: ["product_analytics", "ecosystem"]
+
+    columns:
+      - name: company_primary_sector
+        description: Sector name derived from the company's primary classification key, representing the company's main sector
+
+      - name: company_primary_sector_parent
+        description: |
+          Parent sector of the company's primary sector, determined via the classification's `root_key`.  
+          null if the primary sector is itself a root

@@ -1,0 +1,141 @@
+version: 2
+
+models:
+  - name: page_flow
+    description: |
+      Granularity: event_id  
+      
+      Captures up to 4-step sequential page view flows per session by user.  
+      Filters repeated consecutive views of the same page and supports behavior flow analysis.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3spage_flow)**
+
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+
+    columns:
+      - name: record_id
+        description: Unique identifier for the session event (inherited from `int_page_flow`).
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: GA4 user ID, nullified for anonymous users (prefix `_`).
+
+      - name: user_pseudo_id
+        description: Anonymous GA4 identifier per user/device/session.
+
+      - name: session_id
+        description: Unique session identifier from GA4.
+
+      - name: session_date
+        description: Date of the session (used for partitioning).
+
+      - name: grouped_page_path_1
+        description: First unique page view in the session flow.
+
+      - name: grouped_page_name_1
+        description: Name of the first unique page view in the session flow.
+
+      - name: grouped_page_path_2
+        description: Second unique page view in the session flow.
+
+      - name: grouped_page_name_2
+        description: Name of the second unique page view in the session flow.
+
+      - name: grouped_page_path_3
+        description: Third unique page view in the session flow.
+
+      - name: grouped_page_name_3
+        description: Name of the third unique page view in the session flow.
+
+      - name: grouped_page_path_4
+        description: Fourth unique page view in the session flow.
+
+      - name: grouped_page_name_4
+        description: Name of the fourth unique page view in the session flow.
+
+      - name: device__browser
+        description: '{{ doc("device__browser") }}'
+
+      - name: device__browser_version
+        description: '{{ doc("device__browser_version") }}'
+
+      - name: device__category
+        description: '{{ doc("device__category") }}'
+
+      - name: device__language
+        description: '{{ doc("device__language") }}'
+
+      - name: device__mobile_brand_name
+        description: '{{ doc("device__mobile_brand_name") }}'
+
+      - name: device__mobile_marketing_name
+        description: '{{ doc("device__mobile_marketing_name") }}'
+
+      - name: device__mobile_model_name
+        description: '{{ doc("device__mobile_model_name") }}'
+
+      - name: device__mobile_os_hardware_model
+        description: '{{ doc("device__mobile_os_hardware_model") }}'
+
+      - name: device__operating_system
+        description: '{{ doc("device__operating_system") }}'
+
+      - name: device__operating_system_version
+        description: '{{ doc("device__operating_system_version") }}'
+
+      - name: geo__city
+        description: '{{ doc("geo__city") }}'
+
+      - name: geo__continent
+        description: '{{ doc("geo__continent") }}'
+
+      - name: geo__country
+        description: '{{ doc("geo__country") }}'
+
+      - name: geo__region
+        description: '{{ doc("geo__region") }}'
+
+      - name: geo__sub_continent
+        description: '{{ doc("geo__sub_continent") }}'
+
+      - name: marketing_source
+        description: '{{ doc("marketing_source") }}'
+
+      - name: marketing_medium
+        description: '{{ doc("marketing_medium") }}'
+
+      - name: marketing_campaign
+        description: '{{ doc("marketing_campaign") }}'
+
+      - name: marketing_campaignid
+        description: '{{ doc("marketing_campaignid") }}'
+
+      - name: marketing_date
+        description: '{{ doc("marketing_date") }}'
+
+      - name: marketing_company
+        description: '{{ doc("marketing_company") }}'
+
+      - name: marketing_region
+        description: '{{ doc("marketing_region") }}'
+
+      - name: marketing_channel
+        description: '{{ doc("marketing_channel") }}'
+
+      - name: marketing_details
+        description: '{{ doc("marketing_details") }}'
+
+      - name: marketing_objective
+        description: '{{ doc("marketing_objective") }}'
+
+      - name: marketing_campaign_group
+        description: '{{ doc("marketing_campaign_group") }}'
+
+      - name: channel_grouping
+        description: '{{ doc("channel_grouping") }}'

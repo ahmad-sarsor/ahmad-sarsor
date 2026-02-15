@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: int_connect_request
+    description: |
+      Extracts GA4 events corresponding to "connect_request" user interactions, capturing both user and marketing 
+      dimensions along with page context and event-specific metadata (`entity_type`, `step`).  
+      This intermediate model is used for analyzing the user journey and funnel behavior related to connection requests.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_connect_request)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: entity_type
+        description: Specifies the type of entity involved in the connect request
+
+      - name: step
+        description: Indicates the stage of the connect request process the event corresponds to, enabling step-by-step funnel tracking
+
+      - name: company_url_name
+        description: URL-friendly identifier for the company, used to associate connect requests with specific companies
+
+      - name: page_title
+        description: Page title where the connect request event occurred
+
+      - name: page_referrer
+        description: Referring page URL leading to the connect request event
+
+      - name: page_location
+        description: Full URL of the page where the event was triggered

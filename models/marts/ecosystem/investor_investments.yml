@@ -1,0 +1,171 @@
+version: 2
+
+models:
+  - name: investor_investments
+    description: Individual investor participations in funding rounds.
+    config:
+      contract:
+        enforced: true
+    constraints:
+      - type: primary_key
+        columns: [investment_id]
+        warn_unenforced: false
+
+    columns:
+      - name: investment_id
+        description: Unique identifier for each investment.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: round_id
+        description: Unique identifier for the funding round.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: round_date
+        description: Date when the funding round occurred.
+        data_type: date
+
+      - name: round_year
+        description: Year when the funding round occurred.
+        data_type: int64
+
+      - name: round_type
+        description: Type of funding round (e.g., Seed, Series A).
+        data_type: string
+
+      - name: round_category
+        description: Classification of the funding round.
+        data_type: string 
+
+      - name: total_round_amount
+        description: Total amount raised in the funding round in USD.
+        data_type: int64
+
+      - name: company_id
+        description: Unique identifier for the company receiving the investment.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('companies')
+              field: company_id
+              config:
+                severity: warn
+
+      - name: company_name
+        description: Name of the company receiving funding.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: disclosure_company_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: investor_id
+        description: Unique identifier for the investor.
+        data_type: string
+
+      - name: investor_name
+        description: Name of the investor.
+        data_type: string
+
+      - name: investor_type
+        description: Type of the investor entity.
+        data_type: string
+
+      - name: investor_sub_type
+        description: Sub-type of the investor (e.g., VC, Angel, CVC).
+        data_type: string
+
+      - name: investor_country
+        description: Country of the investor.
+        data_type: string
+
+      - name: disclosure_investor_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: is_lead
+        description: Whether the investor is the lead investor in this round.
+        data_type: int64
+
+      - name: investor_investment_amount
+        description: Amount invested by this specific investor in USD.
+        data_type: int64
+
+      - name: disclosure_invested_level
+        description: Disclosure level of the investment.
+        data_type: string
+
+      - name: is_follow_on
+        description: Whether this is a follow-on investment in the same company.
+        data_type: int64
+
+      - name: is_first_investment_ever
+        description: Whether this is the investor's first investment ever.
+        data_type: int64
+
+      - name: first_investment_date
+        description: Date of the investor's first investment ever.
+        data_type: date
+
+      - name: source
+        description: Source of the investment information.
+        data_type: string
+
+      - name: event_created_date
+        description: Date when the investment record was created.
+        data_type: date
+
+      - name: event_creator_name
+        description: Name of the user who created the investment record.
+        data_type: string
+
+      - name: event_creator_email
+        description: Email of the user who created the investment record.
+        data_type: string
+
+      - name: event_updated_date
+        description: Date and time when the investment record was last updated.
+        data_type: datetime
+
+      - name: event_updater_name
+        description: Name of the user who last updated the investment record.
+        data_type: string
+
+      - name: event_updater_email
+        description: Email of the user who last updated the investment record.
+        data_type: string
+
+      - name: investor_finder_url
+        description: Finder URL to the investor profile.
+        data_type: string
+
+      - name: company_finder_url
+        description: Finder URL to the company profile.
+        data_type: string
+
+      - name: disclosure_event_level
+        description: Disclosure level for the funding event.
+        data_type: string  
+
+
+
+
+
+
+
+        

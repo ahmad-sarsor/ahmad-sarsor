@@ -1,0 +1,245 @@
+version: 2
+
+models:
+  - name: sessions
+    description: |
+      Granularity: session_id, session_date  
+        
+      This model enriches session data with user profiles and advanced metrics.  
+      It resolves user identity by selecting the most authoritative user record (prioritizing registered accounts and earliest signups) and backfilling missing user_ids with identifiers from other sessions of the same device.  
+      Anonymous sessions are linked to known users when possible through a cascading identity resolution process.  
+      The model also identifies power users based on engagement thresholds (>N sessions) and enhances sessions with time dimensions for comprehensive customer journey analysis.  
+      Optimized through partitioning and clustering for efficient querying.  
+        
+      Key fields include:
+      - **session_id**: A unique identifier for each session
+      - **user_id**: Unique ID from Finder MySQL database
+      - **user_pseudo_id**: Unique ID per visitor (GA4 Client ID)
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3ssessions)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        data_tests:
+          - not_null
+          - dbt_utils.not_accepted_values:
+              values: var("empty_session_id")
+          - relationships:
+              to: ref('int_sessions')
+              field: session_id
+
+      - name: session_date
+        description: '{{ doc("session_date") }}'
+        data_tests:
+          - not_null
+      
+      - name: session_duration
+        description: '{{ doc("session_duration") }}'
+
+      - name: session_engagement_time
+        description: The total time in seconds that the user actively engaged during the session
+
+      - name: session_min_event_datetime
+        description: The timestamp of the earliest event in the session
+
+      - name: session_max_event_datetime
+        description: The timestamp of the latest event in the session
+
+      - name: session_events
+        description: A list with all the session events in order
+
+      - name: suspected_fraud
+        description: '{{ doc("suspected_fraud") }}'
+        
+      - name: landing_page
+        description: The first page the user visited in the session
+
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+
+      - name: user_pseudo_id
+        description: '{{ doc("user_pseudo_id") }}'
+
+      - name: user_first_name
+        description: '{{ doc("user_first_name") }}'
+
+      - name: user_last_name
+        description: '{{ doc("user_last_name") }}'
+
+      - name: user_gender
+        description: '{{ doc("user_gender") }}'
+
+      - name: user_email
+        description: '{{ doc("user_email") }}'
+
+      - name: is_member
+        description: '{{ doc("is_member") }}'
+
+      - name: is_password_empty
+        description: '{{ doc("is_password_empty") }}'
+
+      - name: is_email_validated
+        description: '{{ doc("is_email_validated") }}'
+
+      - name: is_new_user
+        description: '{{ doc("is_new_user") }}'
+
+      - name: is_returning_user
+        description: '{{ doc("is_returning_user") }}'
+
+      - name: is_user_confirmed
+        description: '{{ doc("is_user_confirmed") }}'
+
+      - name: is_user_registered
+        description: '{{ doc("is_user_registered") }}'
+
+      - name: user_signup_date
+        description: The date when the user signed up
+
+      - name: user_signup_start_datetime
+        description: The timestamp when the user started the signup process
+
+      - name: user_signup_complete_datetime
+        description: The timestamp when the user completed the signup process
+
+      - name: is_snc_employee
+        description: '{{ doc("is_snc_employee") }}'
+
+      - name: snc_region
+        description: '{{ doc("snc_region") }}'
+
+      - name: snc_target
+        description: '{{ doc("snc_target") }}'
+
+      - name: israeli
+        description: '{{ doc("israeli") }}'
+
+      - name: user_primary_usage
+        description: '{{ doc("user_primary_usage") }}'
+
+      - name: user_type
+        description: '{{ doc("user_type") }}'
+
+      - name: entity_analysis_type
+        description: '{{ doc("entity_analysis_type") }}'
+
+      - name: derived_user_type
+        description: '{{ doc("derived_user_type") }}'
+
+      - name: is_power_user
+        description: '{{ doc("is_power_user") }}'
+
+      - name: user_company_id
+        description: '{{ doc("user_company_id") }}'
+
+      - name: user_company_name
+        description: '{{ doc("user_company_name") }}'
+
+      - name: user_company_url_name
+        description: '{{ doc("user_company_url_name") }}'
+
+      - name: user_company_type
+        description: '{{ doc("user_company_type") }}'
+
+      - name: user_company_subtype
+        description: '{{ doc("user_company_subtype") }}'
+
+      - name: user_company_primary_sector
+        description: '{{ doc("user_company_primary_sector") }}'
+
+      - name: user_company_primary_sector_parent
+        description: '{{ doc("user_company_primary_sector_parent") }}'
+
+      - name: marketing_source
+        description: '{{ doc("marketing_source") }}'
+
+      - name: marketing_medium
+        description: '{{ doc("marketing_medium") }}'
+
+      - name: marketing_campaign
+        description: '{{ doc("marketing_campaign") }}'
+
+      - name: marketing_campaignid
+        description: '{{ doc("marketing_campaignid") }}'
+
+      - name: marketing_date
+        description: '{{ doc("marketing_date") }}'
+
+      - name: marketing_company
+        description: '{{ doc("marketing_company") }}'
+
+      - name: marketing_region
+        description: '{{ doc("marketing_region") }}'
+
+      - name: marketing_channel
+        description: '{{ doc("marketing_channel") }}'
+
+      - name: marketing_details
+        description: '{{ doc("marketing_details") }}'
+
+      - name: marketing_objective
+        description: '{{ doc("marketing_objective") }}'
+
+      - name: marketing_campaign_group
+        description: '{{ doc("marketing_campaign_group") }}'
+
+      - name: channel_grouping
+        description: '{{ doc("channel_grouping") }}'
+
+      - name: device__browser
+        description: '{{ doc("device__browser") }}'
+
+      - name: device__browser_version
+        description: '{{ doc("device__browser_version") }}'
+
+      - name: device__category
+        description: '{{ doc("device__category") }}'
+
+      - name: device__language
+        description: '{{ doc("device__language") }}'
+
+      - name: device__mobile_brand_name
+        description: '{{ doc("device__mobile_brand_name") }}'
+
+      - name: device__mobile_marketing_name
+        description: '{{ doc("device__mobile_marketing_name") }}'
+        
+      - name: device__mobile_model_name
+        description: '{{ doc("device__mobile_model_name") }}'
+
+      - name: device__mobile_os_hardware_model
+        description: '{{ doc("device__mobile_os_hardware_model") }}'
+
+      - name: device__operating_system
+        description: '{{ doc("device__operating_system") }}'
+
+      - name: device__operating_system_version
+        description: '{{ doc("device__operating_system_version") }}'
+
+      - name: geo__city
+        description: '{{ doc("geo__city") }}'
+
+      - name: geo__continent
+        description: '{{ doc("geo__continent") }}'
+
+      - name: geo__country
+        description: '{{ doc("geo__country") }}'
+
+      - name: geo__region
+        description: '{{ doc("geo__region") }}'
+
+      - name: geo__sub_continent
+        description: '{{ doc("geo__sub_continent") }}'

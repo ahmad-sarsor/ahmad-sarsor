@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: collection_to_notification_fields
+    description: |
+      Granularity: notification_id, list_id, notification_field    
+
+      Stores individual notification field configurations for Watchlists.  
+      One row per notification field per collection, enriched with timestamps and metadata.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3scollection_to_notification_fields)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: list_id
+        description: Unique identifier of the watchlist associated with the notification rule.
+
+      - name: list_created_datetime
+        description: Timestamp of when the associated collection was created.
+
+      - name: list_last_modified_datetime
+        description: Timestamp of the most recent modification to the associated collection.
+
+      - name: notification_id
+        description: Unique identifier for the notification rule.
+
+      - name: notification_interval_days
+        description: Frequency (in days) at which the notification is triggered, if conditions are met.
+
+      - name: notification_field
+        description: Individual field being monitored for changes; derived from splitting the `fields` string in the source table.
+
+      - name: last_notification_datetime
+        description: Timestamp when the notification was last triggered for this configuration.
+
+      - name: notification_created_datetime
+        description: Timestamp of when the notification rule was created.

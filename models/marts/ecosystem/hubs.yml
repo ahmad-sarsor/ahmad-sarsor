@@ -1,0 +1,204 @@
+version: 2
+
+models:
+  - name: hubs
+    description: |
+      Hubs mart model containing enriched hub data including accelerators, corporate accelerators,
+      entrepreneurship programs, communities, and co-working spaces with investment metrics.
+      Supports Israeli Tech Ecosystem reports for Startup Nation Central.
+
+    config:
+      tags: ["ecosystem"]
+      contract:
+        enforced: true
+    
+    constraints:
+      - type: primary_key
+        columns: [hub_id]
+        warn_unenforced: false
+
+    columns:
+      - name: hub_id
+        description: Unique identifier for the hub.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: hub_name
+        description: Name of the hub entity.
+        data_type: string
+
+      - name: hub_type
+        description: |
+          Type of hub: Accelerator, Corporate Accelerator, Entrepreneurship Program, 
+          Community, or Co-Working Space.
+        data_type: string
+
+      - name: hub_sub_type
+        description: Sub-type classification within the hub type.
+        data_type: string
+
+      - name: is_active
+        description: Whether the hub is currently active (1) or closed (0).
+        data_type: int64
+
+      - name: hub_country
+        description: Country where the hub is headquartered.
+        data_type: string
+
+      - name: is_israeli
+        description: Whether the hub is an Israeli-based entity.
+        data_type: int64
+
+      - name: founded_year
+        description: Year the hub was founded.
+        data_type: int64
+
+      - name: founded_month
+        description: Month the hub was founded.
+        data_type: int64
+
+      - name: in_israel_since_year
+        description: Year the hub established presence in Israel.
+        data_type: int64
+
+      - name: in_israel_since_month
+        description: Month the hub established presence in Israel.
+        data_type: int64
+
+      - name: closed_year
+        description: Year when the hub was closed.
+        data_type: int64
+
+      - name: closed_month
+        description: Month when the hub was closed.
+        data_type: int64
+
+      - name: is_claimed
+        description: Whether the hub profile has been claimed.
+        data_type: int64
+
+      - name: claimed_date
+        description: Date when the profile was claimed.
+        data_type: date
+
+      - name: representing_of_name
+        description: Name of the parent organization this hub represents.
+        data_type: string
+
+      - name: num_members
+        description: Total number of team members associated with the hub.
+        data_type: int64
+
+      - name: num_claimed_members
+        description: Number of team members who have claimed their profiles.
+        data_type: int64
+
+      - name: num_followers
+        description: Number of users who added this hub to their watchlist.
+        data_type: int64
+
+      - name: register_id
+        description: Israeli company registry ID.
+        data_type: string
+
+      - name: crunchbase_id
+        description: Crunchbase identifier for the hub.
+        data_type: string
+
+      - name: last_investment
+        description: Date of the hub's most recent investment in a startup.
+        data_type: date
+
+      - name: total_investments
+        description: Total number of investment rounds the hub has participated in.
+        data_type: int64
+
+      - name: creator_id
+        description: ID of the user who created the hub record.
+        data_type: string
+
+      - name: creator_name
+        description: Name of the user who created the hub record.
+        data_type: string
+
+      - name: creator_email
+        description: Email of the user who created the hub record.
+        data_type: string
+
+      - name: created_date
+        description: Date when the hub record was created.
+        data_type: date
+
+      - name: last_modifier_id
+        description: ID of the user who last modified the record.
+        data_type: string
+
+      - name: last_modified_date
+        description: Date when the record was last modified.
+        data_type: date
+
+      - name: bi_verify_key
+        description: Key of the BI user who verified the hub data.
+        data_type: string
+
+      - name: bi_verify_name
+        description: Name of the BI user who verified the hub data.
+        data_type: string
+
+      - name: bi_verify_email
+        description: Email of the BI user who verified the hub data.
+        data_type: string
+
+      - name: bi_verify_date
+        description: Date when the hub data was verified by BI.
+        data_type: date
+
+      - name: finder_url
+        description: Finder URL to the hub profile.
+        data_type: string
+
+      - name: logo_url
+        description: URL to the hub logo image.
+        data_type: string
+
+      - name: description
+        description: Full description of the hub entity.
+        data_type: string
+
+      - name: short_description
+        description: Short tagline or description of the hub.
+        data_type: string
+
+      - name: common_misspellings
+        description: Comma-separated list of alternative names, spelling variations, 
+          and former names for the entity
+          Used for fuzzy matching and search.
+        data_type: STRING
+
+      - name: website
+        description: Hub website URL.
+        data_type: string
+
+      - name: teams_page
+        description: URL to the hub's team page.
+        data_type: string
+
+      - name: email_domain
+        description: Primary email domain of the hub.
+        data_type: string
+
+      - name: hide_reason
+        description: Reason for hiding the hub profile (if applicable).
+        data_type: string
+
+      - name: disclosure_level
+        description: |
+          Data disclosure level for reports and aggregations:
+          - all: Publish name and include in calculations
+          - aggregation: Include in calculations only (no name)
+          - none: Exclude entirely from reports
+        data_type: string

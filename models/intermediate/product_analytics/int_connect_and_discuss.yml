@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: int_connect_and_discuss
+    description: |
+      This model consolidates chat invitation and engagement data for "Connect and Discuss" sessions.  
+      It joins chat invitation records with member and company info,  
+      then links with chat history to compute per-channel engagement metrics.  
+      These include message counts per participant (inviting vs. invited user),  
+      timestamps of first and last messages, and latency between invitation and first message.  
+      An offset is applied to exclude automatic messages sent upon invitation.
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_connect_and_discuss)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: record_id
+        description: Unique identifier for each chat channel (same as `channel_id`)
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: invited_company_id
+        description: Company ID associated with the invited member, derived by joining chat invitations to member records
+
+      - name: inviting_user_messages
+        description: Number of distinct messages sent by the inviting user in the chat, adjusted to exclude the initial automated message
+
+      - name: invited_user_messages
+        description: Number of distinct messages sent by the invited user in the chat
+
+      - name: first_message_datetime
+        description: Timestamp of the first message sent in the channel, used to measure response and engagement timing
+
+      - name: last_message_datetime
+        description: Timestamp of the most recent message sent in the channel
+
+      - name: time_since_invite_seconds
+        description: Time in seconds between the chat invitation and the message from the inviting or invited user

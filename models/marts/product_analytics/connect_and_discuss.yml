@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: connect_and_discuss
+    description: |
+      Granularity:  channel_id
+
+      Each record describes a chat channel between 2 participants (inviter and invitee).  
+
+      Metrics:
+        - clicked_connter_counter
+        - reminders
+        - time_to_accept_days
+        - time_to_withdraw_days
+        - inviting_user_messages
+        - invited_user_messages
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3sconnect_and_discuss)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique

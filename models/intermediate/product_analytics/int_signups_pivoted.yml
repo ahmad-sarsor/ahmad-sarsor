@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: int_signups_pivoted
+    description: |
+      Granularity: user_id, signup_platform, signup_type, signup_attempt  
+
+      Aggregated and pivoted view of user signup flows, combining GA4 events into a single row per signup attempt.  
+      Each row represents one signup attempt per user, platform, and type, showing the timestamp for each step in the flow.  
+      Uses a pivot operation to unnest signup steps into individual timestamp columns.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_signups_pivoted)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: event_date
+        description: "{{ doc('event_date') }}"
+
+      - name: user_id
+        description: >
+          Canonical user ID resolved from both direct user_id in GA4 or inferred
+          via user_pseudo_id using the `int_users` mapping logic.
+
+      - name: signup_platform
+        description: >
+          Platform used for signup, such as 'web' or 'mobile'.
+
+      - name: signup_type
+        description: >
+          Type of signup flow, inferred from session context.
+
+      - name: signup_attempt
+        description: >
+          Numeric value representing the attempt number of the signup by the user.
+
+      - name: signup_origin
+        description: >
+          Origin or source where the signup was initiated (e.g. referral, direct), taken
+          from the earliest step in the flow.
+
+      - name: max_session_id
+        description: >
+          Latest session ID involved in the signup attempt.
+
+      - name: page_location
+        description: >
+          URL of the page where the signup started, based on the earliest event in the attempt.
+
+      - name: page_title
+        description: >
+          Page title corresponding to the signup start page.
+
+      - name: signup_start_date
+        description: >
+          Date when the signup attempt started.
+
+      - name: signup_start_datetime
+        description: >
+          UTC timestamp when the signup attempt began.
+
+      - name: signup_complete_datetime
+        description: >
+          Timestamp when the signup attempt was completed, using the earlier of either
+          'complete submit' or 'complete skip' steps.
+
+      - name: signup_step__email_verification_sent__datetime_utc
+        description: >
+          Timestamp when the 'email verification sent' step was recorded during signup.
+
+      - name: signup_step__started__datetime_utc
+        description: >
+          Timestamp of when the signup was initiated (i.e. first 'sign_up' event).
+
+      - name: signup_step__name__datetime_utc
+        description: >
+          Timestamp of the step where user provided their name.
+
+      - name: signup_step__primary_usage__datetime_utc
+        description: >
+          Timestamp of the step where user specified their primary usage.
+
+      - name: signup_step__business_email__datetime_utc
+        description: >
+          Timestamp of the business email entry step during signup.
+
+      - name: signup_step__complete_skip__datetime_utc
+        description: >
+          Timestamp when the user skipped completing the signup form.
+
+      - name: signup_step__complete_submit__datetime_utc
+        description: >
+          Timestamp when the user completed and submitted the signup form.

@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: stg_ga4__events_pivoted
+    description: |
+      ## General Information
+      * **Unique Key**: event_id
+      * **Granularity**: user_id, session_id, event_id, event_datetime_utc  
+      * **Type**: Incremental (lookback window of 7 days)  
+      * **Description**: Transforms unnested GA4 events into a pivoted structure with enriched URL components and page categorization.  
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sGA4_Staging!3sstg_ga4__events_pivoted)**
+
+      ## Logical Components
+
+      ### Event Parameter Pivoting
+      - Converts key-value event parameters into dedicated columns using `max_by` with timestamp ordering
+      - Calculates engagement time in seconds from milliseconds (`engagement_time_msec`)
+      - Pivots important parameters: page_title, page_referrer, page_location, section, entity details, etc.
+
+      ### URL Processing
+      - Extracts standardized components from URLs:
+        - Referrer path from page_referrer
+        - Page path and query from page_location
+        - Tab, view, and company name parameters
+
+      ### Page Categorization
+      - Standardizes diverse page paths into logical groups using pattern matching
+      - Creates human-readable page names for reporting
+      - Handles special cases like homepage and search pages
+
+      ### Data Cleanup
+      - Fixes known data quality issues in tab, section, and entity_type values
+      - Standardizes capitalization and formatting
+
+      ### Session Analysis
+      - Tracks previous page within user sessions
+      - Creates page view rank to number views within sessions
+      - Identifies session start events
+
+      ### Engagement Metrics
+      - Calculates engagement time per page view
+      - Uses lead window function for accurate page duration measurement
+      - Aggregates total engagement time per page view
+
+    columns:
+      - name: event_id
+        description: "{{ doc('event_id') }}"
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: event_date
+        description: "{{ doc('event_date') }}"
+        data_tests:
+          - not_null
+
+      - name: event_datetime_utc
+        description: "{{ doc('event_datetime_utc') }}"
+        data_tests:
+          - not_null
+
+      - name: event_name
+        description: "{{ doc('event_name') }}"
+        data_tests:
+          - not_null
+
+      - name: page_view_engagement_time_seconds
+        description: Total engagement_time (in seconds) for each page_view_rank group of events
+
+      - name: referrer_path
+        description: "{{ doc('referrer_path') }}"
+
+      - name: page_path
+        description: "{{ doc('page_path') }}"
+
+      - name: page_query
+        description: "{{ doc('page_query') }}"
+        
+      - name: company_url_name
+        description: "{{ doc('company_url_name') }}"
+        
+      - name: grouped_page_path
+        description: "{{ doc('grouped_page_path') }}"    
+
+      - name: grouped_page_name
+        description: "{{ doc('grouped_page_name') }}"

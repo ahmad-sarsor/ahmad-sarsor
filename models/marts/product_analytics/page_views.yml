@@ -1,0 +1,230 @@
+version: 2
+
+models:
+  - name: page_views
+    description: |
+      Granularity: date_day, user_id, page_location, page_title
+
+      This table captures detailed information about each page view event recorded in Google Analytics 4 (GA4).  
+      Each entry represents a unique instance where a user has viewed a page on the Finder website. 
+      To inspect the total number of page views, there is a 'page_views' column which counts the actual raw events.  
+
+      Key fields include:
+      - **page_location**: The URL of the page viewed.
+      - **page_title**: The title of the page as rendered in the browser.
+      - **page_referrer**: The URL of the page that referred the user to the current page.
+      - **page_views**: The number of times the page was viewed by the user on a given day.
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3spage_views)**
+    
+    config:
+      tags: ["Google Analytics 4", "MySQL", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        data_tests:
+          - relationships:
+              to: ref('int_page_views')
+              field: session_id
+          - relationships:
+              to: ref('sessions')
+              field: session_id
+
+      - name: session_duration
+        description: '{{ doc("session_duration") }}'
+
+      - name: date_day
+        description: '{{ doc("date_day") }}'
+
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+
+      - name: user_pseudo_id
+        description: '{{ doc("user_pseudo_id") }}'
+
+      - name: company_url_name
+        description: '{{ doc("company_url_name") }}'
+        
+      - name: suspected_fraud
+        description: '{{ doc("suspected_fraud") }}'
+
+      - name: is_power_user
+        description: '{{ doc("is_power_user") }}'
+
+      - name: page_location
+        description: '{{ doc("page_location") }}'
+
+      - name: page_title
+        description: '{{ doc("page_title") }}'
+
+      - name: page_path
+        description: |
+          Canonicalized page path selected per page title.  
+          Among all paths sharing a title, the model prefers paths that have hyphens and occur more frequently,  
+          ensuring more standardized reporting.
+        
+      - name: grouped_page_path
+        description: "{{ doc('grouped_page_path') }}"
+
+      - name: engagement_time_seconds
+        description: "{{ doc('engagement_time_seconds') }}"
+
+      - name: user_first_name
+        description: '{{ doc("user_first_name") }}'
+
+      - name: user_last_name
+        description: '{{ doc("user_last_name") }}'
+
+      - name: user_gender
+        description: '{{ doc("user_gender") }}'
+
+      - name: user_email
+        description: '{{ doc("user_email") }}'
+
+      - name: is_password_empty
+        description: '{{ doc("is_password_empty") }}'
+
+      - name: is_email_validated
+        description: '{{ doc("is_email_validated") }}'
+
+      - name: is_user_confirmed
+        description: '{{ doc("is_user_confirmed") }}'
+
+      - name: is_user_registered
+        description: '{{ doc("is_user_registered") }}'
+
+      - name: user_signup_date
+        description: The date when the user signed up
+
+      - name: is_snc_employee
+        description: '{{ doc("is_snc_employee") }}'
+
+      - name: snc_region
+        description: '{{ doc("snc_region") }}'
+
+      - name: snc_target
+        description: '{{ doc("snc_target") }}'
+
+      - name: israeli
+        description: '{{ doc("israeli") }}'
+
+      - name: user_primary_usage
+        description: '{{ doc("user_primary_usage") }}'
+
+      - name: user_type
+        description: '{{ doc("user_type") }}'
+
+      - name: derived_user_type
+        description: '{{ doc("derived_user_type") }}'
+
+      - name: user_company_id
+        description: '{{ doc("user_company_id") }}'
+
+      - name: user_company_name
+        description: '{{ doc("user_company_name") }}'
+
+      - name: user_company_url_name
+        description: '{{ doc("user_company_url_name") }}'
+
+      - name: user_company_type
+        description: '{{ doc("user_company_type") }}'
+
+      - name: user_company_subtype
+        description: '{{ doc("user_company_subtype") }}'
+
+      - name: user_company_primary_sector
+        description: '{{ doc("user_company_primary_sector") }}'
+
+      - name: user_company_primary_sector_parent
+        description: '{{ doc("user_company_primary_sector_parent") }}'
+
+      - name: marketing_source
+        description: '{{ doc("marketing_source") }}'
+
+      - name: marketing_medium
+        description: '{{ doc("marketing_medium") }}'
+
+      - name: marketing_campaign
+        description: '{{ doc("marketing_campaign") }}'
+
+      - name: marketing_campaignid
+        description: '{{ doc("marketing_campaignid") }}'
+
+      - name: marketing_date
+        description: '{{ doc("marketing_date") }}'
+
+      - name: marketing_company
+        description: '{{ doc("marketing_company") }}'
+
+      - name: marketing_region
+        description: '{{ doc("marketing_region") }}'
+
+      - name: marketing_channel
+        description: '{{ doc("marketing_channel") }}'
+
+      - name: marketing_details
+        description: '{{ doc("marketing_details") }}'
+
+      - name: marketing_objective
+        description: '{{ doc("marketing_objective") }}'
+
+      - name: marketing_campaign_group
+        description: '{{ doc("marketing_campaign_group") }}'
+
+      - name: channel_grouping
+        description: '{{ doc("channel_grouping") }}'
+
+      - name: device__browser
+        description: '{{ doc("device__browser") }}'
+
+      - name: device__browser_version
+        description: '{{ doc("device__browser_version") }}'
+
+      - name: device__category
+        description: '{{ doc("device__category") }}'
+
+      - name: device__language
+        description: '{{ doc("device__language") }}'
+
+      - name: device__mobile_brand_name
+        description: '{{ doc("device__mobile_brand_name") }}'
+
+      - name: device__mobile_marketing_name
+        description: '{{ doc("device__mobile_marketing_name") }}'
+        
+      - name: device__mobile_model_name
+        description: '{{ doc("device__mobile_model_name") }}'
+
+      - name: device__mobile_os_hardware_model
+        description: '{{ doc("device__mobile_os_hardware_model") }}'
+
+      - name: device__operating_system
+        description: '{{ doc("device__operating_system") }}'
+
+      - name: device__operating_system_version
+        description: '{{ doc("device__operating_system_version") }}'
+
+      - name: geo__city
+        description: '{{ doc("geo__city") }}'
+
+      - name: geo__continent
+        description: '{{ doc("geo__continent") }}'
+
+      - name: geo__country
+        description: '{{ doc("geo__country") }}'
+
+      - name: geo__region
+        description: '{{ doc("geo__region") }}'
+
+      - name: geo__sub_continent
+        description: '{{ doc("geo__sub_continent") }}'

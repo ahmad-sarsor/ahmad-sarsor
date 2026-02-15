@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: int_signups
+    description: |
+      Granularity: event_id  
+
+      Intermediate model capturing granular sign-up related GA4 events for users, including 'sign_up' and 'profile_data' steps.  
+      Extracts key sign-up metadata from GA4 event parameters and deduplicates events per user per minute.  
+      It also enriches with consistent user_id resolution and assigns a `signup_attempt` count across multiple sign-up flows per user.  
+        
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sIntermediate!3sint_signups)**
+
+    config:
+      tags: ["product_analytics"]
+
+    columns:
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_ga4__events_unnested')
+              field: session_id
+
+      - name: event_date
+        description: "{{ doc('event_date') }}"
+
+      - name: user_id
+        description: >
+          Canonical user ID resolved from both direct user_id in GA4 or inferred
+          via user_pseudo_id using the `int_users` mapping logic.
+
+      - name: user_pseudo_id
+        description: >
+          GA4 pseudonymous identifier used to track users prior to authentication.
+
+      - name: event_id
+        description: "{{ doc('event_id') }}"
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: event_datetime_utc
+        description: "{{ doc('event_datetime_utc') }}"
+
+      - name: page_location
+        description: "{{ doc('page_location') }}"
+
+      - name: page_title
+        description: "{{ doc('page_title') }}"
+
+      - name: signup_origin
+        description: >
+          Describes where the signup was initiated from (e.g., marketing page,
+          referral), extracted from the 'origin' event parameter.
+
+      - name: signup_platform
+        description: >
+          The platform used during signup (e.g., web, mobile), derived from the
+          'platform' event parameter.
+
+      - name: signup_type
+        description: >
+          Type of signup flow. Inferred from session context using a windowed
+          `first_value` approach over a one-hour bucket to ensure consistency.
+          Defaults to 'new' if no type is available.
+
+      - name: signup_step
+        description: >
+          Current step in the signup flow, inferred from event_name and event_key.
+          Maps 'sign_up' to 'started' and takes values from 'step' parameter in
+          'profile_data' events.
+
+      - name: signup_attempt
+        description: >
+          A counter indicating the order of signup attempts by the user, computed
+          using `signup_rank` and `last_value` over user events chronologically.

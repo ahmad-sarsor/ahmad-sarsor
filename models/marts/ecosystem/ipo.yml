@@ -1,0 +1,126 @@
+version: 2
+
+models:
+  - name: ipo
+    description: 
+      IPO events containing IPO-related event information,
+      including company details, exchange details, and disclosure metadata.
+      Supports Israeli Tech Ecosystem reports for Startup Nation Central.
+    config:
+      contract:
+        enforced: true
+
+    constraints:
+      - type: primary_key
+        columns: [event_id]
+        warn_unenforced: false
+
+    columns:
+      - name: event_id
+        description: Unique identifier for the IPO event.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
+
+      - name: event_type
+        description: Type of event related to the IPO.
+        data_type: string
+
+      - name: event_date
+        description: Date of the IPO event.
+        data_type: date
+
+      - name: event_year
+        description: Year of the IPO event.
+        data_type: int64
+
+      - name: company_id
+        description: identifier for the company.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: company_name
+        description: Name of the company.
+        data_type: string
+        constraints:
+          - type: not_null
+        data_tests:
+          - not_null
+
+      - name: company_type
+        description: Type of company.
+        data_type: string
+
+      - name: company_primary_sector_name
+        description: Primary sector of the company.
+        data_type: string
+
+      - name: stock_exchange_name
+        description: Name of the stock exchange.
+        data_type: string
+
+      - name: stock_exchange_country
+        description: Country of the stock exchange.
+        data_type: string
+
+      - name: ticker
+        description: Stock ticker symbol.
+        data_type: string
+
+      - name: source
+        description: Source of the IPO information.
+        data_type: string
+
+      - name: is_exit
+        description: Indicator whether the IPO was an exit event.
+        data_type: int64
+
+      - name: capital_raised
+        description: Amount of capital raised during the IPO.
+        data_type: int64
+
+      - name: valuation
+        description: Valuation of the company at the time of the IPO.
+        data_type: int64
+
+      - name: disclosure_company_level
+        description: all = publish the name and calculate | aggregation = calculate only | none = exclude entirely.
+        data_type: string
+
+      - name: disclosure_amount_level
+        description: Amount-level disclosure information.
+        data_type: string
+
+      - name: disclosure_event_level
+        description: Event-level disclosure information.
+        data_type: string
+
+      - name: disclosure_event_type_level
+        description: Event type-level disclosure information.
+        data_type: string
+
+      - name: event_created_date
+        description: Date the IPO event was created.
+        data_type: date
+
+      - name: event_creator_name
+        description: Name of the user who created the IPO event.
+        data_type: string
+
+      - name: event_updated_date
+        description: Date and time the IPO event was last updated.
+        data_type: datetime
+
+      - name: event_updater_name
+        description: Name of the user who last updated the IPO event.
+        data_type: string
+
+      - name: event_updater_email
+        description: Email address of the user who last updated the IPO event.
+        data_type: string

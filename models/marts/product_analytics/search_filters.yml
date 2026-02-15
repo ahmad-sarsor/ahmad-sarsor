@@ -1,0 +1,236 @@
+version: 2
+
+models:
+  - name: search_filters
+    description: |
+      Granularity: date_day, search_id  
+
+      Aggregates user search activity into a single row per search intent,  
+      combining all filters applied, profile views, tab interactions, and semantic input (if any).   
+      
+      This model pivots the parsed filters from `int_search_filters` into a wide format for analytics,  
+      categorizing filters into classification, categorical, and quantitative (range) types.  
+      It supports structured and semantic searches, enabling filter usage analysis,  
+      user behavior insights, and segmentation across dimensions like user, session, geo, marketing source, etc.  
+
+      **[go to Table](https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1sfinderv2!2sMarts!3ssearch_filters)**
+
+    config:
+      tags: ["Google Analytics 4", "Search", "Semantic Search", "product_analytics"]
+    
+    columns:
+      - name: record_id
+        description: '{{ doc("record_id") }}'
+        constraints:
+          - type: not_null
+          - type: primary_key
+        data_tests:
+          - not_null
+          - unique
+
+      - name: date_day
+        description: '{{ doc("date_day") }}'
+
+      - name: user_id
+        description: '{{ doc("user_id") }}'
+
+      - name: user_pseudo_id
+        description: '{{ doc("user_pseudo_id") }}'
+
+      - name: session_id
+        description: '{{ doc("session_id") }}'
+
+      - name: session_duration
+        description: '{{ doc("session_duration") }}'
+
+      - name: suspected_fraud
+        description: '{{ doc("suspected_fraud") }}'
+
+      - name: is_power_user
+        description: '{{ doc("is_power_user") }}'
+
+      - name: search_id
+        description: "Composite identifier for a single search activity based on GA4 events."
+
+      - name: profile
+        description: "Entity type searched for (e.g. Company, Investor, Hub)."
+
+      - name: is_semantic_search
+        description: "Flag indicating whether the search used semantic (AI-assisted) filtering."
+
+      - name: semantic_user_input
+        description: "User's free-text input during a semantic search."
+
+      - name: semantic_ai_analysis
+        description: "AI-generated interpretation or summary of the semantic input."
+
+      - name: search_started_datetime
+        description: "Timestamp of the first search-related event in the session."
+
+      - name: search_pages
+        description: "Comma-separated list of pagination indices visited during this search."
+
+      - name: search_page_count
+        description: "Number of unique pagination pages visited."
+
+      - name: profiles_viewed
+        description: "Comma-separated string of company URL names viewed during this search."
+
+      - name: profiles_unique_count
+        description: "Number of distinct profiles visited during this search."
+
+      - name: tabs_clicked
+        description: "String representing the sequence of tabs clicked during profile exploration."
+
+      - name: tabs_unique_count
+        description: "Number of unique tabs interacted with."
+
+      - name: user_first_name
+        description: '{{ doc("user_first_name") }}'
+
+      - name: user_last_name
+        description: '{{ doc("user_last_name") }}'
+
+      - name: user_gender
+        description: '{{ doc("user_gender") }}'
+
+      - name: user_email
+        description: '{{ doc("user_email") }}'
+
+      - name: is_password_empty
+        description: '{{ doc("is_password_empty") }}'
+
+      - name: is_email_validated
+        description: '{{ doc("is_email_validated") }}'
+
+      - name: is_user_confirmed
+        description: '{{ doc("is_user_confirmed") }}'
+
+      - name: is_user_registered
+        description: '{{ doc("is_user_registered") }}'
+
+      - name: user_signup_date
+        description: The date when the user signed up
+
+      - name: is_snc_employee
+        description: '{{ doc("is_snc_employee") }}'
+
+      - name: snc_region
+        description: '{{ doc("snc_region") }}'
+
+      - name: snc_target
+        description: '{{ doc("snc_target") }}'
+
+      - name: israeli
+        description: '{{ doc("israeli") }}'
+
+      - name: user_primary_usage
+        description: '{{ doc("user_primary_usage") }}'
+
+      - name: user_type
+        description: '{{ doc("user_type") }}'
+
+      - name: derived_user_type
+        description: '{{ doc("derived_user_type") }}'
+
+      - name: user_company_id
+        description: '{{ doc("user_company_id") }}'
+
+      - name: user_company_name
+        description: '{{ doc("user_company_name") }}'
+
+      - name: user_company_url_name
+        description: '{{ doc("user_company_url_name") }}'
+
+      - name: user_company_type
+        description: '{{ doc("user_company_type") }}'
+
+      - name: user_company_subtype
+        description: '{{ doc("user_company_subtype") }}'
+
+      - name: user_company_primary_sector
+        description: '{{ doc("user_company_primary_sector") }}'
+
+      - name: user_company_primary_sector_parent
+        description: '{{ doc("user_company_primary_sector_parent") }}'
+
+      - name: marketing_source
+        description: '{{ doc("marketing_source") }}'
+
+      - name: marketing_medium
+        description: '{{ doc("marketing_medium") }}'
+
+      - name: marketing_campaign
+        description: '{{ doc("marketing_campaign") }}'
+
+      - name: marketing_campaignid
+        description: '{{ doc("marketing_campaignid") }}'
+
+      - name: marketing_date
+        description: '{{ doc("marketing_date") }}'
+
+      - name: marketing_company
+        description: '{{ doc("marketing_company") }}'
+
+      - name: marketing_region
+        description: '{{ doc("marketing_region") }}'
+
+      - name: marketing_channel
+        description: '{{ doc("marketing_channel") }}'
+
+      - name: marketing_details
+        description: '{{ doc("marketing_details") }}'
+
+      - name: marketing_objective
+        description: '{{ doc("marketing_objective") }}'
+
+      - name: marketing_campaign_group
+        description: '{{ doc("marketing_campaign_group") }}'
+
+      - name: channel_grouping
+        description: '{{ doc("channel_grouping") }}'
+
+      - name: device__browser
+        description: '{{ doc("device__browser") }}'
+
+      - name: device__browser_version
+        description: '{{ doc("device__browser_version") }}'
+
+      - name: device__category
+        description: '{{ doc("device__category") }}'
+
+      - name: device__language
+        description: '{{ doc("device__language") }}'
+
+      - name: device__mobile_brand_name
+        description: '{{ doc("device__mobile_brand_name") }}'
+
+      - name: device__mobile_marketing_name
+        description: '{{ doc("device__mobile_marketing_name") }}'
+        
+      - name: device__mobile_model_name
+        description: '{{ doc("device__mobile_model_name") }}'
+
+      - name: device__mobile_os_hardware_model
+        description: '{{ doc("device__mobile_os_hardware_model") }}'
+
+      - name: device__operating_system
+        description: '{{ doc("device__operating_system") }}'
+
+      - name: device__operating_system_version
+        description: '{{ doc("device__operating_system_version") }}'
+
+      - name: geo__city
+        description: '{{ doc("geo__city") }}'
+
+      - name: geo__continent
+        description: '{{ doc("geo__continent") }}'
+
+      - name: geo__country
+        description: '{{ doc("geo__country") }}'
+
+      - name: geo__region
+        description: '{{ doc("geo__region") }}'
+
+      - name: geo__sub_continent
+        description: '{{ doc("geo__sub_continent") }}'
