@@ -1,146 +1,219 @@
-# Hi, I'm Ahmad Sarsor 👋
+# dbt Analytics Data Warehouse
 
-**BI & Data Engineer** | Building scalable data infrastructure and analytics solutions
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmad-sarsor/)
-[![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:ahmad.kefah11sar@gmail.com)
+Welcome to the **dbt Analytics Data Warehouse** repository! 🚀  
+This project demonstrates a production-grade data warehouse built with dbt Core and BigQuery, featuring 107+ models for tech ecosystem analytics. Designed as a portfolio project, it highlights industry best practices in modern data engineering and analytics engineering.
 
 ---
 
-## 🚀 About Me
+## 🏗️ Data Architecture
 
-Data Engineer with expertise in building and managing end-to-end cloud-based data infrastructure and analytics solutions. Specialized in **dbt Core**, **BigQuery**, **Snowflake**, and **Google Cloud Platform**. Proven track record of delivering significant cost savings (80%+ reduction in ETL costs), leading DWH modernization projects, and building scalable data pipelines. Strong experience in dimensional data modeling, CI/CD implementation, and creating impactful BI dashboards.
+The data architecture for this project follows the **Three-Layer dbt Architecture** with Google Cloud Build orchestration:
 
----
+![Data Architecture](data_architecture.png)
 
-## 🛠️ Tech Stack
-
-**Data Warehousing:** BigQuery, Snowflake, Redshift, Dimensional Data Modeling, MPP Databases
-
-**Data Engineering:** dbt Core, Airflow, Prefect, Dagster, Data Pipelines, ETL/ELT
-
-**Programming:** Python, SQL, T-SQL, Pandas, Jupyter Notebooks, Jinja, YAML, DAX, R
-
-**Cloud & DevOps:** GCP (Cloud Run, Cloud Scheduler, Cloud Storage), Docker, Terraform, CI/CD
-
-**CI/CD & Version Control:** GitHub Actions, Jenkins, Git, GitHub, Code Reviews, Unit Testing
-
-**BI & Visualization:** Power BI, Tableau, QlikView, Excel (PowerPivot, PowerQuery)
-
-**APIs & Automation:** Slack API, GA4, Gemini AI, Bright Data, Salesforce, REST APIs
+1. **Staging Layer**: Raw data connection from source systems. Light transformations including column renaming, type casting, and basic filtering. Data is stored as Views.
+2. **Intermediate Layer**: Business logic transformations including data cleansing, joining entities, business rules, calculated fields, and data enrichment. Data Model is Normalized.
+3. **Marts Layer**: Business-ready analytics with star schema design. Includes data integration, aggregations, KPI calculations, and final metrics for reporting.
 
 ---
 
-## 💼 Work Experience
+## 📖 Project Overview
 
-### BI & Data Engineer | Startup Nation Central, Israel
-**2024 - Present**
+This project involves:
 
-**Key Achievements:**
-- Led ETL infrastructure migration from Rivery, achieving **80% cost reduction** (38K to 7K ILS annually) while improving data security and operational control
-- Completed migration in **3 weeks** vs. estimated several months - 75% timeline reduction
-- Took ownership of DWH restructuring project (originally scoped for external consultants), saving consulting fees while ensuring knowledge retention
+1. **Data Architecture**: Designing a Modern Data Warehouse using dbt's three-layer architecture (Staging → Intermediate → Marts).
+2. **ELT Pipelines**: Extracting data from multiple sources and transforming with dbt Core on BigQuery.
+3. **Data Modeling**: Developing fact and dimension tables using dimensional modeling best practices.
+4. **Data Quality**: Implementing comprehensive testing, documentation, and real-time monitoring.
+5. **CI/CD**: Automated deployment with Google Cloud Build, Cloud Run, and Cloud Scheduler.
+6. **Analytics & Reporting**: Powering Power BI dashboards and organizational reports.
 
-**Data Pipeline & Infrastructure:**
-- Designed and built end-to-end cloud-based data pipelines using Airflow orchestration and dbt transformations
-- Implemented CI/CD pipelines using GitHub Actions for automated testing and deployment of data models
-- Managed cloud infrastructure using Terraform and Docker containerization for reproducible environments
-- Built automated ETL pipelines with Cloud Run and Cloud Scheduler
-
-**DWH Architecture & Dimensional Modeling:**
-- Architected **107+ dbt models** using dimensional data modeling best practices for Israeli Tech Ecosystem analytics
-- Developed **64 dbt models** for Product Analytics processing Google Analytics 4 data
-- Implemented three-layer dbt structure (staging, intermediate, marts) with comprehensive testing and documentation
-- Designed comprehensive Data Flow Diagram and professional ERD schema in three stages
-
-**Data Analysis & Python Development:**
-- Developed Python scripts using pandas and Jupyter Notebooks for data analysis and pipeline development
-- Created BigQuery SQL scripts analyzing table usage history for data-driven DWH optimization decisions
-- Built real-time data quality monitoring system with Slack alerts and Gemini AI analysis
-
-**Business Intelligence & Reporting:**
-- Developed **10+ Power BI dashboards** for Finance, Marketing, Data, and executive stakeholders
-- Built the flagship Annual Report and Quarterly Report dashboards - key deliverables for organizational reporting
-
-**Leadership & Collaboration:**
-- Mentor new analysts on data sources, DWH structure, and entity relationships
-- Lead training sessions on dbt and modern DWH architecture for the Data team
-- Collaborate with Product, Finance, and Marketing teams to translate business needs into data models
-
-### Data Analyst - Intern | Planview, Israel
-**2022**
-
-- Extracted and processed data from Jira API for business analytics using Python and SQL
-- Analyzed and cleaned datasets using SQL, SSIS, JQL, and Excel (PowerQuery, PowerPivot)
-- Created interactive reports and dashboards using Power BI
+🎯 This repository is an excellent resource for professionals looking to showcase expertise in:
+- Analytics Engineering
+- dbt Development
+- Data Engineering  
+- Data Modeling  
+- BigQuery & GCP
+- CI/CD for Data
 
 ---
 
-## 📌 Featured Projects
+## 🛠️ Important Links & Tools
 
-### 🏗️ [dbt-analytics-dwh](https://github.com/ahmad-sarsor/dbt-analytics-dwh)
-Production-grade dbt project with **107+ models** for tech ecosystem analytics
-- Three-layer architecture (staging → intermediate → marts)
-- Comprehensive testing and documentation
-- Automated deployment with Cloud Run
+Everything you need to understand and replicate this project:
 
-### 📊 [dbt-ga4-product-analytics](https://github.com/ahmad-sarsor/dbt-ga4-product-analytics)
-Google Analytics 4 data transformation pipeline with **64 dbt models**
-- Event tracking and user behavior analysis
-- Session and conversion modeling
-- Incremental processing for performance
-
-### 🔔 [dbt-slack-quality-alerts](https://github.com/ahmad-sarsor/dbt-slack-quality-alerts)
-Real-time data quality monitoring system
-- Automated Slack notifications
-- AI-powered analysis with Gemini
-- Custom dbt test integration
-
-### 💰 [etl-cost-optimization](https://github.com/ahmad-sarsor/etl-cost-optimization)
-Case study: How I reduced ETL costs by **80%** (38K → 7K ILS annually)
-- Migration strategy and implementation
-- Architecture decisions and trade-offs
-- Timeline: 3 weeks vs. estimated months
+- **[dbt Core](https://docs.getdbt.com/):** Data transformation framework
+- **[Google BigQuery](https://cloud.google.com/bigquery):** Cloud data warehouse
+- **[Google Cloud Build](https://cloud.google.com/build):** CI/CD orchestration
+- **[Power BI](https://powerbi.microsoft.com/):** Business intelligence and reporting
+- **[Draw.io](https://www.drawio.com/):** Design data architecture and diagrams
+- **[Git Repository](https://github.com/):** Version control and collaboration
 
 ---
 
-## 🎓 Education
+## 🚀 Project Requirements
 
-**B.Sc. in Technology Management & Information Systems**  
-Bar-Ilan University, Israel | 2020 - 2023
+### Building the Data Warehouse (Data Engineering)
 
----
+#### Objective
+Develop a modern data warehouse using dbt Core and BigQuery to consolidate tech ecosystem data, enabling analytical reporting and informed decision-making.
 
-## 📜 Certifications & Training
-
-- **2024:** Data Analysis Course - Xbida Company (150 hours)
-- **2023:** BI Developer Bootcamp (600 hours) - Power BI, SQL, SSIS
-- **2022-23:** Advanced SQL for Data Analysis - Ram Kedem, Upscale
-
----
-
-## 🤝 Volunteering
-
-**Chimes Israel Center** | 2022 - Present  
-Volunteering to help people with special needs
+#### Specifications
+- **Data Sources**: Import data from multiple source systems (MySQL, Google Analytics 4, APIs) via BigQuery Federation.
+- **Data Quality**: Cleanse and resolve data quality issues using dbt tests and custom validations.
+- **Integration**: Combine all sources into a single, user-friendly data model designed for analytical queries.
+- **Automation**: Daily scheduled refreshes with Cloud Scheduler and Cloud Run.
+- **Documentation**: Provide clear documentation of the data model using dbt docs.
 
 ---
 
-## 🌍 Languages
+### BI: Analytics & Reporting (Data Analysis)
 
-🇸🇦 Arabic (Native) • 🇮🇱 Hebrew (Fluent) • 🇬🇧 English (Professional)
+#### Objective
+Develop analytics models to deliver detailed insights into:
+- **Funding Trends**: Investment rounds, amounts, and sectors
+- **Company Performance**: Growth metrics and sector analysis
+- **Investor Analysis**: Active investors and participation patterns
+- **Economic Indicators**: GDP contribution and employment trends
 
----
-
-## 📫 Let's Connect
-
-I'm always interested in discussing data engineering, analytics, and new opportunities.
-
-📧 **Email:** ahmad.kefah11sar@gmail.com  
-💼 **LinkedIn:** [ahmad-sarsor](https://www.linkedin.com/in/ahmad-sarsor/)
+These insights empower stakeholders with key business metrics for the Israeli Tech Ecosystem reports.
 
 ---
 
-<p align="center">
-  <i>"Turning raw data into business insights, one model at a time."</i>
-</p>
+## 📂 Repository Structure
+
+```
+dbt-analytics-dwh/
+│
+├── models/                              # dbt models organized by layer
+│   ├── staging/                         # Raw data transformations (30+ models)
+│   │   ├── mysql/                       # Models from MySQL source
+│   │   ├── google_sheets/               # Models from Google Sheets
+│   │   ├── ga4/                         # Models from Google Analytics 4
+│   │   └── staging.yml                  # Schema definitions
+│   │
+│   ├── intermediate/                    # Business logic layer (40+ models)
+│   │   ├── entities/                    # Entity transformations
+│   │   ├── metrics/                     # Calculated metrics
+│   │   └── intermediate.yml             # Schema definitions
+│   │
+│   └── marts/                           # Business-ready models (35+ models)
+│       ├── core/                        # Core dimensions and facts
+│       ├── finance/                     # Finance-specific models
+│       ├── marketing/                   # Marketing models
+│       └── marts.yml                    # Schema definitions
+│
+├── tests/                               # Custom data tests
+│   ├── generic/                         # Reusable test definitions
+│   └── singular/                        # One-off test queries
+│
+├── macros/                              # Reusable Jinja macros
+│
+├── seeds/                               # Static reference data (CSV)
+│
+├── snapshots/                           # Slowly changing dimensions
+│
+├── docs/                                # Project documentation
+│   ├── data_architecture.png            # Architecture diagram
+│   ├── erd_diagram.png                  # Entity Relationship Diagram
+│   └── data_catalog.md                  # Field descriptions and metadata
+│
+├── scripts/                             # Deployment and utility scripts
+│   ├── deploy/                          # Cloud Run deployment
+│   └── alerts/                          # Slack notification scripts
+│
+├── dbt_project.yml                      # dbt project configuration
+├── packages.yml                         # dbt package dependencies
+├── profiles.yml.example                 # Example connection profile
+├── Dockerfile                           # Container configuration
+├── README.md                            # Project documentation
+├── LICENSE                              # License information
+└── .gitignore                           # Git ignore rules
+```
+
+---
+
+## 📊 Data Flow Summary
+
+| Layer | Object Type | Materialization | Models | Prefix |
+|-------|-------------|-----------------|--------|--------|
+| **Staging** | Views | View | 30+ | `stg_` |
+| **Intermediate** | Tables | Table / Incremental | 40+ | `int_` |
+| **Marts** | Tables | Table | 35+ | `dim_` / `fct_` |
+
+---
+
+## 🔧 Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Transformation** | dbt Core |
+| **Data Warehouse** | Google BigQuery |
+| **Orchestration** | Google Cloud Build, Cloud Run, Cloud Scheduler |
+| **BI & Reporting** | Power BI |
+| **Version Control** | Git, GitHub |
+| **Data Sources** | MySQL (CloudSQL), Google Analytics 4, APIs |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.9+
+- dbt Core 1.7+
+- Google Cloud SDK
+- BigQuery access
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/ahmad-sarsor/dbt-analytics-dwh.git
+cd dbt-analytics-dwh
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure dbt profile
+cp profiles.yml.example ~/.dbt/profiles.yml
+
+# Verify installation
+dbt debug
+```
+
+### Running the Project
+
+```bash
+# Install dbt packages
+dbt deps
+
+# Run all models
+dbt run
+
+# Run tests
+dbt test
+
+# Generate documentation
+dbt docs generate
+dbt docs serve
+```
+
+---
+
+## 🛡️ License
+
+This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and share this project with proper attribution.
+
+---
+
+## 🌟 About Me
+
+Hi there! I'm **Ahmad Sarsor**, a BI & Data Engineer with expertise in building end-to-end cloud-based data infrastructure and analytics solutions. Specialized in dbt Core, BigQuery, and Google Cloud Platform.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmad-sarsor/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ahmad-sarsor)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:ahmad.kefah11sar@gmail.com)
