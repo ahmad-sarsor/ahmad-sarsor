@@ -9,7 +9,7 @@ This project demonstrates a production-grade data warehouse built with dbt Core 
 
 The data architecture for this project follows the **Three-Layer dbt Architecture** with Google Cloud Build orchestration:
 
-![Data Architecture](data_architecture.png)
+![Data Architecture](docs/data_architecture.png)
 
 1. **Staging Layer**: Raw data connection from source systems. Light transformations including column renaming, type casting, and basic filtering. Data is stored as Views.
 2. **Intermediate Layer**: Business logic transformations including data cleansing, joining entities, business rules, calculated fields, and data enrichment. Data Model is Normalized.
